@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavandería Limpio Y Listo - Sistema de Gestión</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4FC3F7;
+            --primary-light: #E1F5FE;
+            --primary-dark: #0288D1;
+            --secondary-color: #81C784;
+            --accent-color: #FF9800;
+            --light-color: #FFFFFF;
+            --dark-color: #37474F;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #FFFFFF 100%);
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            border-radius: 0 0 var(--radius) var(--radius);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            background: white;
+            color: var(--primary-color);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-text h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .branch-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .branch-selector select {
+            background: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            cursor: pointer;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #66BB6A;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #F57C00;
+            transform: translateY(-2px);
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .column {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .column:hover {
+            transform: translateY(-5px);
+        }
+        
+        .column-header {
+            padding: 18px;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .pending .column-header {
+            background: linear-gradient(135deg, #FFB74D, #FF9800);
+        }
+        
+        .washing .column-header {
+            background: linear-gradient(135deg, #4FC3F7, #0288D1);
+        }
+        
+        .drying .column-header {
+            background: linear-gradient(135deg, #7986CB, #3949AB);
+        }
+        
+        .ironing .column-header {
+            background: linear-gradient(135deg, #4DB6AC, #00897B);
+        }
+        
+        .ready .column-header {
+            background: linear-gradient(135deg, #81C784, #43A047);
+        }
+        
+        .column-content {
+            padding: 20px;
+            min-height: 450px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        
+        .order-card {
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary-color);
+            cursor: move;
+            transition: all 0.3s;
+        }
+        
+        .order-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-id {
+            background: var(--primary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .order-details {
+            font-size: 0.9rem;
+            color: #546E7A;
+        }
+        
+        .order-details div {
+            margin-bottom: 6px;
+            display: flex;
+        }
+        
+        .order-details strong {
+            min-width: 100px;
+            color: var(--dark-color);
+        }
+        
+        .time-stamp {
+            font-size: 0.8rem;
+            color: #78909C;
+            margin-top: 12px;
+            border-top: 1px solid #B0BEC5;
+            padding-top: 8px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .stat-card p {
+            color: #607D8B;
+            font-weight: 600;
+        }
+        
+        .report-section {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        .report-preview {
+            margin-top: 20px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #FAFAFA;
+        }
+        
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .report-table th, .report-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        
+        .report-table th {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+        
+        .report-table tr:hover {
+            background-color: #F5F5F5;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #78909C;
+            border-top: 1px solid #E0E0E0;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .board {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">L&L</div>
+                    <div class="logo-text">
+                        <h1>Lavandería Limpio Y Listo</h1>
+                        <p>Sistema de Gestión de Órdenes</p>
+                    </div>
+                </div>
+                <div class="branch-selector">
+                    <span>Sucursal:</span>
+                    <select id="branch-select">
+                        <option value="jalapa">Jalapa</option>
+                        <option value="somoto">Somoto</option>
+                        <option value="ocotal">Ocotal</option>
+                    </select>
+                </div>
+                <div class="current-time" id="current-time"></div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <button class="btn btn-primary" id="add-order-btn">
+                <i class="fas fa-plus"></i> Agregar Nueva Orden
+            </button>
+            <button class="btn btn-success" id="save-data-btn">
+                <i class="fas fa-save"></i> Guardar Datos
+            </button>
+            <button class="btn btn-primary" id="generate-report-btn">
+                <i class="fas fa-file-pdf"></i> Generar Informe PDF
+            </button>
+            <button class="btn btn-danger" id="clear-data-btn">
+                <i class="fas fa-trash"></i> Limpiar Todo
+            </button>
+        </div>
+        
+        <div class="form-container" id="order-form" style="display: none;">
+            <h2>Nueva Orden de Lavado</h2>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="client-name">Nombre del Cliente</label>
+                    <input type="text" id="client-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="client-phone">Teléfono</label>
+                    <input type="tel" id="client-phone" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="order-details">Detalles de la Orden</label>
+                    <textarea id="order-details" class="form-control" rows="3" placeholder="Descripción de la ropa, instrucciones especiales, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="order-type">Tipo de Servicio</label>
+                    <select id="order-type" class="form-control">
+                        <option value="lavado">Lavado Básico</option>
+                        <option value="lavado-seco">Lavado en Seco</option>
+                        <option value="planchado">Planchado</option>
+                        <option value="completo">Servicio Completo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Agregar Orden
+                    </button>
+                    <button type="button" class="btn btn-danger" id="cancel-form">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="board">
+            <div class="column pending">
+                <div class="column-header">Pendientes</div>
+                <div class="column-content" id="pending-column" data-status="pending">
+                    <!-- Las órdenes pendientes aparecerán aquí -->
+                </div>
+            </div>
+            
+            <div class="column washing">
+                <div class="column-header">En Lavado</div>
+                <div class="column-content" id="washing-column" data-status="washing">
+                    <!-- Las órdenes en lavado aparecerán aquí -->
+                </div>
+            </div>
+            
+            <div class="column drying">
+                <div class="column-header">En Secado</div>
+                <div class="column-content" id="drying-column" data-status="drying">
+                    <!-- Las órdenes en secado aparecerán aquí -->
+                </div>
+            </div>
+            
+            <div class="column ironing">
+                <div class="column-header">En Planchado</div>
+                <div class="column-content" id="ironing-column" data-status="ironing">
+                    <!-- Las órdenes en planchado aparecerán aquí -->
+                </div>
+            </div>
+            
+            <div class="column ready">
+                <div class="column-header">Listo para Entrega</div>
+                <div class="column-content" id="ready-column" data-status="ready">
+                    <!-- Las órdenes listas aparecerán aquí -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="pending-count">0</h3>
+                <p>Órdenes Pendientes</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="in-progress-count">0</h3>
+                <p>En Proceso</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="ready-count">0</h3>
+                <p>Listas para Entrega</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="total-count">0</h3>
+                <p>Total de Órdenes</p>
+            </div>
+        </div>
+        
+        <div class="report-section">
+            <h2>Vista Previa del Informe Diario</h2>
+            <p>Este informe se generará automáticamente a las 10:00 PM con las órdenes del día (7:00 AM - 10:00 PM)</p>
+            
+            <div class="controls" style="margin-top: 15px;">
+                <button class="btn btn-primary" id="refresh-preview-btn">
+                    <i class="fas fa-sync"></i> Actualizar Vista Previa
+                </button>
+                <button class="btn btn-success" id="test-pdf-btn">
+                    <i class="fas fa-file-download"></i> Generar PDF de Prueba
+                </button>
+            </div>
+            
+            <div class="report-preview" id="report-preview">
+                <!-- La vista previa del informe aparecerá aquí -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Lavandería Limpio Y Listo (L&L) - Sistema de Gestión &copy; 2023</p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let orders = [];
+        let nextOrderId = 1;
+        let currentBranch = 'jalapa';
+        
+        // Elementos del DOM
+        const addOrderBtn = document.getElementById('add-order-btn');
+        const orderForm = document.getElementById('order-form');
+        const cancelFormBtn = document.getElementById('cancel-form');
+        const orderFormElement = document.getElementById('orderForm');
+        const currentTimeElement = document.getElementById('current-time');
+        const branchSelect = document.getElementById('branch-select');
+        const generateReportBtn = document.getElementById('generate-report-btn');
+        const refreshPreviewBtn = document.getElementById('refresh-preview-btn');
+        const testPdfBtn = document.getElementById('test-pdf-btn');
+        
+        // Columnas
+        const pendingColumn = document.getElementById('pending-column');
+        const washingColumn = document.getElementById('washing-column');
+        const dryingColumn = document.getElementById('drying-column');
+        const ironingColumn = document.getElementById('ironing-column');
+        const readyColumn = document.getElementById('ready-column');
+        
+        // Contadores
+        const pendingCountElement = document.getElementById('pending-count');
+        const inProgressCountElement = document.getElementById('in-progress-count');
+        const readyCountElement = document.getElementById('ready-count');
+        const totalCountElement = document.getElementById('total-count');
+        
+        // Botones de control
+        const saveDataBtn = document.getElementById('save-data-btn');
+        const clearDataBtn = document.getElementById('clear-data-btn');
+        
+        // Vista previa del informe
+        const reportPreview = document.getElementById('report-preview');
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            
+            loadOrdersFromStorage();
+            renderOrders();
+            updateStats();
+            updateReportPreview();
+            
+            // Event listeners
+            addOrderBtn.addEventListener('click', showOrderForm);
+            cancelFormBtn.addEventListener('click', hideOrderForm);
+            orderFormElement.addEventListener('submit', handleOrderSubmit);
+            saveDataBtn.addEventListener('click', saveOrdersToStorage);
+            clearDataBtn.addEventListener('click', clearAllData);
+            branchSelect.addEventListener('change', handleBranchChange);
+            generateReportBtn.addEventListener('click', generateDailyReport);
+            refreshPreviewBtn.addEventListener('click', updateReportPreview);
+            testPdfBtn.addEventListener('click', generateTestPDF);
+            
+            // Hacer las columnas arrastrables
+            makeColumnsDraggable();
+            
+            // Configurar la generación automática de informes a las 10:00 PM
+            scheduleDailyReport();
+        });
+        
+        // Funciones
+        function updateCurrentTime() {
+            const now = new Date();
+            currentTimeElement.textContent = now.toLocaleString('es-ES');
+        }
+        
+        function showOrderForm() {
+            orderForm.style.display = 'block';
+        }
+        
+        function hideOrderForm() {
+            orderForm.style.display = 'none';
+            orderFormElement.reset();
+        }
+        
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            
+            const clientName = document.getElementById('client-name').value;
+            const clientPhone = document.getElementById('client-phone').value;
+            const orderDetails = document.getElementById('order-details').value;
+            const orderType = document.getElementById('order-type').value;
+            
+            const newOrder = {
+                id: nextOrderId++,
+                clientName: clientName,
+                clientPhone: clientPhone,
+                orderDetails: orderDetails,
+                orderType: orderType,
+                status: 'pending',
+                branch: currentBranch,
+                entryTime: new Date().toLocaleString('es-ES'),
+                startTime: '',
+                finishTime: ''
+            };
+            
+            orders.push(newOrder);
+            renderOrders();
+            updateStats();
+            updateReportPreview();
+            hideOrderForm();
+            saveOrdersToStorage();
+        }
+        
+        function handleBranchChange(e) {
+            currentBranch = e.target.value;
+            renderOrders();
+            updateStats();
+            updateReportPreview();
+        }
+        
+        function renderOrders() {
+            // Limpiar columnas
+            pendingColumn.innerHTML = '';
+            washingColumn.innerHTML = '';
+            dryingColumn.innerHTML = '';
+            ironingColumn.innerHTML = '';
+            readyColumn.innerHTML = '';
+            
+            // Filtrar órdenes por sucursal actual
+            const branchOrders = orders.filter(order => order.branch === currentBranch);
+            
+            // Renderizar órdenes en sus columnas correspondientes
+            branchOrders.forEach(order => {
+                const orderCard = createOrderCard(order);
+                
+                switch(order.status) {
+                    case 'pending':
+                        pendingColumn.appendChild(orderCard);
+                        break;
+                    case 'washing':
+                        washingColumn.appendChild(orderCard);
+                        break;
+                    case 'drying':
+                        dryingColumn.appendChild(orderCard);
+                        break;
+                    case 'ironing':
+                        ironingColumn.appendChild(orderCard);
+                        break;
+                    case 'ready':
+                        readyColumn.appendChild(orderCard);
+                        break;
+                }
+            });
+        }
+        
+        function createOrderCard(order) {
+            const card = document.createElement('div');
+            card.className = 'order-card';
+            card.draggable = true;
+            card.dataset.orderId = order.id;
+            
+            let statusText = '';
+            switch(order.status) {
+                case 'pending': statusText = 'Pendiente'; break;
+                case 'washing': statusText = 'En Lavado'; break;
+                case 'drying': statusText = 'En Secado'; break;
+                case 'ironing': statusText = 'En Planchado'; break;
+                case 'ready': statusText = 'Listo'; break;
+            }
+            
+            card.innerHTML = `
+                <h3>${order.clientName} <span class="order-id">#${order.id}</span></h3>
+                <div class="order-details">
+                    <div><strong>Teléfono:</strong> ${order.clientPhone || 'No proporcionado'}</div>
+                    <div><strong>Servicio:</strong> ${getServiceTypeText(order.orderType)}</div>
+                    <div><strong>Detalles:</strong> ${order.orderDetails || 'Sin detalles adicionales'}</div>
+                    <div><strong>Estado:</strong> ${statusText}</div>
+                </div>
+                <div class="time-stamp">
+                    <div><strong>Hora de entrada:</strong> ${order.entryTime}</div>
+                    ${order.startTime ? `<div><strong>Hora de inicio:</strong> ${order.startTime}</div>` : ''}
+                    ${order.finishTime ? `<div><strong>Hora de finalización:</strong> ${order.finishTime}</div>` : ''}
+                </div>
+            `;
+            
+            // Eventos de arrastre
+            card.addEventListener('dragstart', handleDragStart);
+            
+            return card;
+        }
+        
+        function getServiceTypeText(type) {
+            switch(type) {
+                case 'lavado': return 'Lavado Básico';
+                case 'lavado-seco': return 'Lavado en Seco';
+                case 'planchado': return 'Planchado';
+                case 'completo': return 'Servicio Completo';
+                default: return type;
+            }
+        }
+        
+        function getBranchName(branch) {
+            switch(branch) {
+                case 'jalapa': return 'Jalapa';
+                case 'somoto': return 'Somoto';
+                case 'ocotal': return 'Ocotal';
+                default: return branch;
+            }
+        }
+        
+        function makeColumnsDraggable() {
+            const columns = document.querySelectorAll('.column-content');
+            
+            columns.forEach(column => {
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('drop', handleDrop);
+            });
+        }
+        
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.orderId);
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            const orderId = e.dataTransfer.getData('text/plain');
+            const newStatus = e.target.closest('.column-content').dataset.status;
+            
+            updateOrderStatus(parseInt(orderId), newStatus);
+        }
+        
+        function updateOrderStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(order => order.id === orderId);
+            
+            if (orderIndex !== -1) {
+                const order = orders[orderIndex];
+                const oldStatus = order.status;
+                
+                // Actualizar el estado
+                order.status = newStatus;
+                
+                // Actualizar tiempos
+                const currentTime = new Date().toLocaleString('es-ES');
+                
+                if (oldStatus === 'pending' && newStatus !== 'pending' && !order.startTime) {
+                    order.startTime = currentTime;
+                }
+                
+                if (newStatus === 'ready' && !order.finishTime) {
+                    order.finishTime = currentTime;
+                }
+                
+                renderOrders();
+                updateStats();
+                updateReportPreview();
+                saveOrdersToStorage();
+            }
+        }
+        
+        function updateStats() {
+            const branchOrders = orders.filter(order => order.branch === currentBranch);
+            const pendingCount = branchOrders.filter(order => order.status === 'pending').length;
+            const inProgressCount = branchOrders.filter(order => 
+                order.status === 'washing' || order.status === 'drying' || order.status === 'ironing').length;
+            const readyCount = branchOrders.filter(order => order.status === 'ready').length;
+            const totalCount = branchOrders.length;
+            
+            pendingCountElement.textContent = pendingCount;
+            inProgressCountElement.textContent = inProgressCount;
+            readyCountElement.textContent = readyCount;
+            totalCountElement.textContent = totalCount;
+        }
+        
+        function updateReportPreview() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const startOfDay = new Date(today);
+            startOfDay.setHours(7, 0, 0, 0); // 7:00 AM
+            
+            const endOfDay = new Date(today);
+            endOfDay.setHours(22, 0, 0, 0); // 10:00 PM
+            
+            // Filtrar órdenes del día actual para la sucursal actual
+            const todaysOrders = orders.filter(order => {
+                if (order.branch !== currentBranch) return false;
+                
+                const orderTime = new Date(order.entryTime);
+                return orderTime >= startOfDay && orderTime <= endOfDay;
+            });
+            
+            // Ordenar por hora de entrada
+            todaysOrders.sort((a, b) => new Date(a.entryTime) - new Date(b.entryTime));
+            
+            let previewHTML = `
+                <h3>Informe Diario - ${getBranchName(currentBranch)} - ${now.toLocaleDateString('es-ES')}</h3>
+                <p><strong>Total de órdenes del día:</strong> ${todaysOrders.length}</p>
+            `;
+            
+            if (todaysOrders.length > 0) {
+                previewHTML += `
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Estado</th>
+                                <th>Hora Entrada</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Finalización</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                todaysOrders.forEach(order => {
+                    let statusText = '';
+                    switch(order.status) {
+                        case 'pending': statusText = 'Pendiente'; break;
+                        case 'washing': statusText = 'En Lavado'; break;
+                        case 'drying': statusText = 'En Secado'; break;
+                        case 'ironing': statusText = 'En Planchado'; break;
+                        case 'ready': statusText = 'Listo'; break;
+                    }
+                    
+                    previewHTML += `
+                        <tr>
+                            <td>${order.id}</td>
+                            <td>${order.clientName}</td>
+                            <td>${getServiceTypeText(order.orderType)}</td>
+                            <td>${statusText}</td>
+                            <td>${order.entryTime}</td>
+                            <td>${order.startTime || '-'}</td>
+                            <td>${order.finishTime || '-'}</td>
+                        </tr>
+                    `;
+                });
+                
+                previewHTML += `
+                        </tbody>
+                    </table>
+                `;
+            } else {
+                previewHTML += `<p>No hay órdenes para mostrar en el día de hoy.</p>`;
+            }
+            
+            reportPreview.innerHTML = previewHTML;
+        }
+        
+        function generateDailyReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const startOfDay = new Date(today);
+            startOfDay.setHours(7, 0, 0, 0); // 7:00 AM
+            
+            const endOfDay = new Date(today);
+            endOfDay.setHours(22, 0, 0, 0); // 10:00 PM
+            
+            // Filtrar órdenes del día actual para la sucursal actual
+            const todaysOrders = orders.filter(order => {
+                if (order.branch !== currentBranch) return false;
+                
+                const orderTime = new Date(order.entryTime);
+                return orderTime >= startOfDay && orderTime <= endOfDay;
+            });
+            
+            // Ordenar por hora de entrada
+            todaysOrders.sort((a, b) => new Date(a.entryTime) - new Date(b.entryTime));
+            
+            // Título
+            doc.setFontSize(18);
+            doc.setTextColor(41, 128, 185);
+            doc.text(`Informe Diario - Lavandería Limpio Y Listo`, 20, 20);
+            
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Sucursal: ${getBranchName(currentBranch)}`, 20, 30);
+            doc.text(`Fecha: ${now.toLocaleDateString('es-ES')}`, 20, 37);
+            doc.text(`Hora de generación: ${now.toLocaleTimeString('es-ES')}`, 20, 44);
+            doc.text(`Total de órdenes: ${todaysOrders.length}`, 20, 51);
+            
+            // Tabla de órdenes
+            if (todaysOrders.length > 0) {
+                const tableColumn = ["#", "Cliente", "Servicio", "Estado", "Hora Entrada", "Hora Inicio", "Hora Final"];
+                const tableRows = [];
+                
+                todaysOrders.forEach(order => {
+                    let statusText = '';
+                    switch(order.status) {
+                        case 'pending': statusText = 'Pendiente'; break;
+                        case 'washing': statusText = 'En Lavado'; break;
+                        case 'drying': statusText = 'En Secado'; break;
+                        case 'ironing': statusText = 'En Planchado'; break;
+                        case 'ready': statusText = 'Listo'; break;
+                    }
+                    
+                    const orderData = [
+                        order.id.toString(),
+                        order.clientName,
+                        getServiceTypeText(order.orderType),
+                        statusText,
+                        order.entryTime,
+                        order.startTime || '-',
+                        order.finishTime || '-'
+                    ];
+                    tableRows.push(orderData);
+                });
+                
+                doc.autoTable({
+                    head: [tableColumn],
+                    body: tableRows,
+                    startY: 60,
+                    theme: 'grid',
+                    styles: { fontSize: 8 },
+                    headStyles: { fillColor: [79, 195, 247] }
+                });
+            } else {
+                doc.text('No hay órdenes para mostrar en el día de hoy.', 20, 70);
+            }
+            
+            // Guardar el PDF
+            doc.save(`Informe_${getBranchName(currentBranch)}_${now.toLocaleDateString('es-ES').replace(/\//g, '-')}.pdf`);
+        }
+        
+        function generateTestPDF() {
+            generateDailyReport();
+        }
+        
+        function scheduleDailyReport() {
+            // Esta función configuraría la generación automática a las 10:00 PM
+            // En un entorno real, esto se haría en el servidor
+            // Para esta demo, solo mostraremos un mensaje
+            console.log("La generación automática de informes está programada para las 10:00 PM");
+        }
+        
+        function saveOrdersToStorage() {
+            localStorage.setItem('ll-orders', JSON.stringify(orders));
+            localStorage.setItem('ll-nextOrderId', nextOrderId);
+            alert('Datos guardados correctamente');
+        }
+        
+        function loadOrdersFromStorage() {
+            const savedOrders = localStorage.getItem('ll-orders');
+            const savedNextOrderId = localStorage.getItem('ll-nextOrderId');
+            
+            if (savedOrders) {
+                orders = JSON.parse(savedOrders);
+            }
+            
+            if (savedNextOrderId) {
+                nextOrderId = parseInt(savedNextOrderId);
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('¿Está seguro de que desea eliminar todos los datos? Esta acción no se puede deshacer.')) {
+                orders = [];
+                nextOrderId = 1;
+                renderOrders();
+                updateStats();
+                updateReportPreview();
+                localStorage.removeItem('ll-orders');
+                localStorage.removeItem('ll-nextOrderId');
+                alert('Todos los datos han sido eliminados');
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome para iconos -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
