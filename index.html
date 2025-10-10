@@ -34,9 +34,10 @@
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 20px;
+            overflow-x: auto;
         }
         
         header {
@@ -191,8 +192,10 @@
         
         .board {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(7, minmax(200px, 1fr));
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 20px;
         }
         
         .column {
@@ -201,6 +204,7 @@
             box-shadow: var(--shadow);
             overflow: hidden;
             transition: transform 0.3s;
+            min-width: 200px;
         }
         
         .column:hover {
@@ -208,15 +212,19 @@
         }
         
         .column-header {
-            padding: 18px;
+            padding: 15px;
             color: white;
             font-weight: 700;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
-        .pending .column-header {
+        .reception .column-header {
             background: linear-gradient(135deg, #FFB74D, #FF9800);
+        }
+        
+        .treatment .column-header {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
         }
         
         .washing .column-header {
@@ -227,16 +235,20 @@
             background: linear-gradient(135deg, #7986CB, #3949AB);
         }
         
-        .ironing .column-header {
+        .folding .column-header {
             background: linear-gradient(135deg, #4DB6AC, #00897B);
         }
         
-        .ready .column-header {
+        .finished .column-header {
             background: linear-gradient(135deg, #81C784, #43A047);
         }
         
+        .delivered .column-header {
+            background: linear-gradient(135deg, #9E9E9E, #616161);
+        }
+        
         .column-content {
-            padding: 20px;
+            padding: 15px;
             min-height: 450px;
             max-height: 500px;
             overflow-y: auto;
@@ -245,8 +257,8 @@
         .order-card {
             background-color: var(--primary-light);
             border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--primary-color);
             cursor: move;
@@ -256,6 +268,11 @@
         .order-card:hover {
             transform: translateX(5px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-card.ironing-service {
+            border-left: 4px solid #FF9800;
+            background-color: #FFF3E0;
         }
         
         .order-card h3 {
@@ -274,27 +291,37 @@
             font-size: 0.8rem;
         }
         
+        .ironing-badge {
+            background: #FF9800;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+        
         .order-details {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #546E7A;
         }
         
         .order-details div {
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             display: flex;
         }
         
         .order-details strong {
-            min-width: 100px;
+            min-width: 80px;
             color: var(--dark-color);
+            font-size: 0.8rem;
         }
         
         .time-stamp {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #78909C;
-            margin-top: 12px;
+            margin-top: 10px;
             border-top: 1px solid #B0BEC5;
-            padding-top: 8px;
+            padding-top: 6px;
         }
         
         .stats {
@@ -375,6 +402,12 @@
             border-top: 1px solid #E0E0E0;
         }
         
+        @media (max-width: 1200px) {
+            .board {
+                grid-template-columns: repeat(4, minmax(200px, 1fr));
+            }
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -433,7 +466,7 @@
         </div>
         
         <div class="form-container" id="order-form" style="display: none;">
-            <h2>Nueva Orden de Lavado</h2>
+            <h2>Nueva Orden de Lavandería</h2>
             <form id="orderForm">
                 <div class="form-group">
                     <label for="client-name">Nombre del Cliente</label>
@@ -457,6 +490,11 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="include-ironing"> Incluir Planchado
+                    </label>
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-success">
                         <i class="fas fa-check"></i> Agregar Orden
                     </button>
@@ -468,58 +506,72 @@
         </div>
         
         <div class="board">
-            <div class="column pending">
-                <div class="column-header">Pendientes</div>
-                <div class="column-content" id="pending-column" data-status="pending">
-                    <!-- Las órdenes pendientes aparecerán aquí -->
+            <div class="column reception">
+                <div class="column-header">Recepción</div>
+                <div class="column-content" id="reception-column" data-status="reception">
+                    <!-- Las órdenes en recepción aparecerán aquí -->
+                </div>
+            </div>
+            
+            <div class="column treatment">
+                <div class="column-header">Tratamiento</div>
+                <div class="column-content" id="treatment-column" data-status="treatment">
+                    <!-- Las órdenes en tratamiento aparecerán aquí -->
                 </div>
             </div>
             
             <div class="column washing">
-                <div class="column-header">En Lavado</div>
+                <div class="column-header">Lavado</div>
                 <div class="column-content" id="washing-column" data-status="washing">
                     <!-- Las órdenes en lavado aparecerán aquí -->
                 </div>
             </div>
             
             <div class="column drying">
-                <div class="column-header">En Secado</div>
+                <div class="column-header">Secado</div>
                 <div class="column-content" id="drying-column" data-status="drying">
                     <!-- Las órdenes en secado aparecerán aquí -->
                 </div>
             </div>
             
-            <div class="column ironing">
-                <div class="column-header">En Planchado</div>
-                <div class="column-content" id="ironing-column" data-status="ironing">
-                    <!-- Las órdenes en planchado aparecerán aquí -->
+            <div class="column folding">
+                <div class="column-header">Doblado</div>
+                <div class="column-content" id="folding-column" data-status="folding">
+                    <!-- Las órdenes en doblado aparecerán aquí -->
                 </div>
             </div>
             
-            <div class="column ready">
-                <div class="column-header">Listo para Entrega</div>
-                <div class="column-content" id="ready-column" data-status="ready">
-                    <!-- Las órdenes listas aparecerán aquí -->
+            <div class="column finished">
+                <div class="column-header">Finalizado</div>
+                <div class="column-content" id="finished-column" data-status="finished">
+                    <!-- Las órdenes finalizadas aparecerán aquí -->
+                </div>
+            </div>
+            
+            <div class="column delivered">
+                <div class="column-header">Entregada</div>
+                <div class="column-content" id="delivered-column" data-status="delivered">
+                    <!-- Las órdenes entregadas aparecerán aquí -->
                 </div>
             </div>
         </div>
         
         <div class="stats">
             <div class="stat-card">
-                <h3 id="pending-count">0</h3>
-                <p>Órdenes Pendientes</p>
+                <h3 id="reception-count">0</h3>
+                <p>En Recepción</p>
             </div>
             <div class="stat-card">
-                <h3 id="in-progress-count">0</h3>
+                <h3 id="process-count">0</h3>
                 <p>En Proceso</p>
             </div>
             <div class="stat-card">
-                <h3 id="ready-count">0</h3>
-                <p>Listas para Entrega</p>
+                <h3 id="finished-count">0</h3>
+                <p>Finalizadas</p>
             </div>
             <div class="stat-card">
-                <h3 id="total-count">0</h3>
-                <p>Total de Órdenes</p>
+                <h3 id="delivered-count">0</h3>
+                <p>Entregadas</p>
             </div>
         </div>
         
@@ -566,17 +618,19 @@
         const testPdfBtn = document.getElementById('test-pdf-btn');
         
         // Columnas
-        const pendingColumn = document.getElementById('pending-column');
+        const receptionColumn = document.getElementById('reception-column');
+        const treatmentColumn = document.getElementById('treatment-column');
         const washingColumn = document.getElementById('washing-column');
         const dryingColumn = document.getElementById('drying-column');
-        const ironingColumn = document.getElementById('ironing-column');
-        const readyColumn = document.getElementById('ready-column');
+        const foldingColumn = document.getElementById('folding-column');
+        const finishedColumn = document.getElementById('finished-column');
+        const deliveredColumn = document.getElementById('delivered-column');
         
         // Contadores
-        const pendingCountElement = document.getElementById('pending-count');
-        const inProgressCountElement = document.getElementById('in-progress-count');
-        const readyCountElement = document.getElementById('ready-count');
-        const totalCountElement = document.getElementById('total-count');
+        const receptionCountElement = document.getElementById('reception-count');
+        const processCountElement = document.getElementById('process-count');
+        const finishedCountElement = document.getElementById('finished-count');
+        const deliveredCountElement = document.getElementById('delivered-count');
         
         // Botones de control
         const saveDataBtn = document.getElementById('save-data-btn');
@@ -635,6 +689,7 @@
             const clientPhone = document.getElementById('client-phone').value;
             const orderDetails = document.getElementById('order-details').value;
             const orderType = document.getElementById('order-type').value;
+            const includeIroning = document.getElementById('include-ironing').checked;
             
             const newOrder = {
                 id: nextOrderId++,
@@ -642,11 +697,16 @@
                 clientPhone: clientPhone,
                 orderDetails: orderDetails,
                 orderType: orderType,
-                status: 'pending',
+                includeIroning: includeIroning,
+                status: 'reception',
                 branch: currentBranch,
                 entryTime: new Date().toLocaleString('es-ES'),
-                startTime: '',
-                finishTime: ''
+                treatmentTime: '',
+                washingTime: '',
+                dryingTime: '',
+                foldingTime: '',
+                finishedTime: '',
+                deliveredTime: ''
             };
             
             orders.push(newOrder);
@@ -666,11 +726,13 @@
         
         function renderOrders() {
             // Limpiar columnas
-            pendingColumn.innerHTML = '';
+            receptionColumn.innerHTML = '';
+            treatmentColumn.innerHTML = '';
             washingColumn.innerHTML = '';
             dryingColumn.innerHTML = '';
-            ironingColumn.innerHTML = '';
-            readyColumn.innerHTML = '';
+            foldingColumn.innerHTML = '';
+            finishedColumn.innerHTML = '';
+            deliveredColumn.innerHTML = '';
             
             // Filtrar órdenes por sucursal actual
             const branchOrders = orders.filter(order => order.branch === currentBranch);
@@ -680,8 +742,11 @@
                 const orderCard = createOrderCard(order);
                 
                 switch(order.status) {
-                    case 'pending':
-                        pendingColumn.appendChild(orderCard);
+                    case 'reception':
+                        receptionColumn.appendChild(orderCard);
+                        break;
+                    case 'treatment':
+                        treatmentColumn.appendChild(orderCard);
                         break;
                     case 'washing':
                         washingColumn.appendChild(orderCard);
@@ -689,11 +754,14 @@
                     case 'drying':
                         dryingColumn.appendChild(orderCard);
                         break;
-                    case 'ironing':
-                        ironingColumn.appendChild(orderCard);
+                    case 'folding':
+                        foldingColumn.appendChild(orderCard);
                         break;
-                    case 'ready':
-                        readyColumn.appendChild(orderCard);
+                    case 'finished':
+                        finishedColumn.appendChild(orderCard);
+                        break;
+                    case 'delivered':
+                        deliveredColumn.appendChild(orderCard);
                         break;
                 }
             });
@@ -702,20 +770,27 @@
         function createOrderCard(order) {
             const card = document.createElement('div');
             card.className = 'order-card';
+            if (order.includeIroning) {
+                card.classList.add('ironing-service');
+            }
             card.draggable = true;
             card.dataset.orderId = order.id;
             
             let statusText = '';
             switch(order.status) {
-                case 'pending': statusText = 'Pendiente'; break;
-                case 'washing': statusText = 'En Lavado'; break;
-                case 'drying': statusText = 'En Secado'; break;
-                case 'ironing': statusText = 'En Planchado'; break;
-                case 'ready': statusText = 'Listo'; break;
+                case 'reception': statusText = 'Recepción'; break;
+                case 'treatment': statusText = 'Tratamiento'; break;
+                case 'washing': statusText = 'Lavado'; break;
+                case 'drying': statusText = 'Secado'; break;
+                case 'folding': statusText = 'Doblado'; break;
+                case 'finished': statusText = 'Finalizado'; break;
+                case 'delivered': statusText = 'Entregada'; break;
             }
             
+            const ironingBadge = order.includeIroning ? '<span class="ironing-badge">Planchado</span>' : '';
+            
             card.innerHTML = `
-                <h3>${order.clientName} <span class="order-id">#${order.id}</span></h3>
+                <h3>${order.clientName} <span class="order-id">#${order.id}${ironingBadge}</span></h3>
                 <div class="order-details">
                     <div><strong>Teléfono:</strong> ${order.clientPhone || 'No proporcionado'}</div>
                     <div><strong>Servicio:</strong> ${getServiceTypeText(order.orderType)}</div>
@@ -723,9 +798,13 @@
                     <div><strong>Estado:</strong> ${statusText}</div>
                 </div>
                 <div class="time-stamp">
-                    <div><strong>Hora de entrada:</strong> ${order.entryTime}</div>
-                    ${order.startTime ? `<div><strong>Hora de inicio:</strong> ${order.startTime}</div>` : ''}
-                    ${order.finishTime ? `<div><strong>Hora de finalización:</strong> ${order.finishTime}</div>` : ''}
+                    <div><strong>Recepción:</strong> ${order.entryTime}</div>
+                    ${order.treatmentTime ? `<div><strong>Tratamiento:</strong> ${order.treatmentTime}</div>` : ''}
+                    ${order.washingTime ? `<div><strong>Lavado:</strong> ${order.washingTime}</div>` : ''}
+                    ${order.dryingTime ? `<div><strong>Secado:</strong> ${order.dryingTime}</div>` : ''}
+                    ${order.foldingTime ? `<div><strong>Doblado:</strong> ${order.foldingTime}</div>` : ''}
+                    ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${order.finishedTime}</div>` : ''}
+                    ${order.deliveredTime ? `<div><strong>Entregado:</strong> ${order.deliveredTime}</div>` : ''}
                 </div>
             `;
             
@@ -792,12 +871,18 @@
                 // Actualizar tiempos
                 const currentTime = new Date().toLocaleString('es-ES');
                 
-                if (oldStatus === 'pending' && newStatus !== 'pending' && !order.startTime) {
-                    order.startTime = currentTime;
-                }
-                
-                if (newStatus === 'ready' && !order.finishTime) {
-                    order.finishTime = currentTime;
+                if (newStatus === 'treatment' && !order.treatmentTime) {
+                    order.treatmentTime = currentTime;
+                } else if (newStatus === 'washing' && !order.washingTime) {
+                    order.washingTime = currentTime;
+                } else if (newStatus === 'drying' && !order.dryingTime) {
+                    order.dryingTime = currentTime;
+                } else if (newStatus === 'folding' && !order.foldingTime) {
+                    order.foldingTime = currentTime;
+                } else if (newStatus === 'finished' && !order.finishedTime) {
+                    order.finishedTime = currentTime;
+                } else if (newStatus === 'delivered' && !order.deliveredTime) {
+                    order.deliveredTime = currentTime;
                 }
                 
                 renderOrders();
@@ -809,16 +894,17 @@
         
         function updateStats() {
             const branchOrders = orders.filter(order => order.branch === currentBranch);
-            const pendingCount = branchOrders.filter(order => order.status === 'pending').length;
-            const inProgressCount = branchOrders.filter(order => 
-                order.status === 'washing' || order.status === 'drying' || order.status === 'ironing').length;
-            const readyCount = branchOrders.filter(order => order.status === 'ready').length;
-            const totalCount = branchOrders.length;
+            const receptionCount = branchOrders.filter(order => order.status === 'reception').length;
+            const processCount = branchOrders.filter(order => 
+                order.status === 'treatment' || order.status === 'washing' || 
+                order.status === 'drying' || order.status === 'folding').length;
+            const finishedCount = branchOrders.filter(order => order.status === 'finished').length;
+            const deliveredCount = branchOrders.filter(order => order.status === 'delivered').length;
             
-            pendingCountElement.textContent = pendingCount;
-            inProgressCountElement.textContent = inProgressCount;
-            readyCountElement.textContent = readyCount;
-            totalCountElement.textContent = totalCount;
+            receptionCountElement.textContent = receptionCount;
+            processCountElement.textContent = processCount;
+            finishedCountElement.textContent = finishedCount;
+            deliveredCountElement.textContent = deliveredCount;
         }
         
         function updateReportPreview() {
@@ -854,10 +940,10 @@
                                 <th>#</th>
                                 <th>Cliente</th>
                                 <th>Servicio</th>
+                                <th>Planchado</th>
                                 <th>Estado</th>
-                                <th>Hora Entrada</th>
-                                <th>Hora Inicio</th>
-                                <th>Hora Finalización</th>
+                                <th>Hora Recepción</th>
+                                <th>Hora Entrega</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -866,11 +952,13 @@
                 todaysOrders.forEach(order => {
                     let statusText = '';
                     switch(order.status) {
-                        case 'pending': statusText = 'Pendiente'; break;
-                        case 'washing': statusText = 'En Lavado'; break;
-                        case 'drying': statusText = 'En Secado'; break;
-                        case 'ironing': statusText = 'En Planchado'; break;
-                        case 'ready': statusText = 'Listo'; break;
+                        case 'reception': statusText = 'Recepción'; break;
+                        case 'treatment': statusText = 'Tratamiento'; break;
+                        case 'washing': statusText = 'Lavado'; break;
+                        case 'drying': statusText = 'Secado'; break;
+                        case 'folding': statusText = 'Doblado'; break;
+                        case 'finished': statusText = 'Finalizado'; break;
+                        case 'delivered': statusText = 'Entregada'; break;
                     }
                     
                     previewHTML += `
@@ -878,10 +966,10 @@
                             <td>${order.id}</td>
                             <td>${order.clientName}</td>
                             <td>${getServiceTypeText(order.orderType)}</td>
+                            <td>${order.includeIroning ? 'Sí' : 'No'}</td>
                             <td>${statusText}</td>
                             <td>${order.entryTime}</td>
-                            <td>${order.startTime || '-'}</td>
-                            <td>${order.finishTime || '-'}</td>
+                            <td>${order.deliveredTime || '-'}</td>
                         </tr>
                     `;
                 });
@@ -934,27 +1022,29 @@
             
             // Tabla de órdenes
             if (todaysOrders.length > 0) {
-                const tableColumn = ["#", "Cliente", "Servicio", "Estado", "Hora Entrada", "Hora Inicio", "Hora Final"];
+                const tableColumn = ["#", "Cliente", "Servicio", "Planchado", "Estado", "Hora Recepción", "Hora Entrega"];
                 const tableRows = [];
                 
                 todaysOrders.forEach(order => {
                     let statusText = '';
                     switch(order.status) {
-                        case 'pending': statusText = 'Pendiente'; break;
-                        case 'washing': statusText = 'En Lavado'; break;
-                        case 'drying': statusText = 'En Secado'; break;
-                        case 'ironing': statusText = 'En Planchado'; break;
-                        case 'ready': statusText = 'Listo'; break;
+                        case 'reception': statusText = 'Recepción'; break;
+                        case 'treatment': statusText = 'Tratamiento'; break;
+                        case 'washing': statusText = 'Lavado'; break;
+                        case 'drying': statusText = 'Secado'; break;
+                        case 'folding': statusText = 'Doblado'; break;
+                        case 'finished': statusText = 'Finalizado'; break;
+                        case 'delivered': statusText = 'Entregada'; break;
                     }
                     
                     const orderData = [
                         order.id.toString(),
                         order.clientName,
                         getServiceTypeText(order.orderType),
+                        order.includeIroning ? 'Sí' : 'No',
                         statusText,
                         order.entryTime,
-                        order.startTime || '-',
-                        order.finishTime || '-'
+                        order.deliveredTime || '-'
                     ];
                     tableRows.push(orderData);
                 });
