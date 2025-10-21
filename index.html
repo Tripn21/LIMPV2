@@ -248,80 +248,148 @@
         }
         
         .column-content {
-            padding: 15px;
+            padding: 10px;
             min-height: 450px;
             max-height: 500px;
             overflow-y: auto;
         }
         
+        /* ESTILOS COMPACTOS PARA ÓRDENES */
         .order-card {
             background-color: var(--primary-light);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border-left: 3px solid var(--primary-color);
             cursor: move;
             transition: all 0.3s;
+            font-size: 0.75rem;
         }
         
         .order-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateX(3px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
         
         .order-card.ironing-service {
-            border-left: 4px solid #FF9800;
+            border-left: 3px solid #FF9800;
             background-color: #FFF3E0;
         }
         
-        .order-card h3 {
-            margin-bottom: 10px;
-            color: var(--dark-color);
+        .order-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .order-client {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 0.8rem;
         }
         
         .order-id {
             background: var(--primary-color);
             color: white;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        
+        .order-badges {
+            display: flex;
+            gap: 3px;
+            margin-top: 3px;
         }
         
         .ironing-badge {
             background: #FF9800;
             color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 1px 4px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+        }
+        
+        .priority-badge {
+            background: #F44336;
+            color: white;
+            padding: 1px 4px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+        }
+        
+        .order-details-compact {
             font-size: 0.7rem;
-            margin-left: 5px;
-        }
-        
-        .order-details {
-            font-size: 0.85rem;
             color: #546E7A;
+            margin-bottom: 5px;
         }
         
-        .order-details div {
-            margin-bottom: 5px;
+        .order-details-compact div {
+            margin-bottom: 2px;
             display: flex;
         }
         
-        .order-details strong {
-            min-width: 80px;
+        .order-details-compact strong {
+            min-width: 50px;
             color: var(--dark-color);
-            font-size: 0.8rem;
+            font-size: 0.65rem;
         }
         
-        .time-stamp {
-            font-size: 0.75rem;
+        .order-status {
+            font-weight: 600;
+            font-size: 0.7rem;
+            margin-top: 3px;
+        }
+        
+        .status-reception { color: #FF9800; }
+        .status-treatment { color: #F57C00; }
+        .status-washing { color: #0288D1; }
+        .status-drying { color: #3949AB; }
+        .status-folding { color: #00897B; }
+        .status-finished { color: #43A047; }
+        .status-delivered { color: #616161; }
+        
+        .order-time {
+            font-size: 0.6rem;
             color: #78909C;
-            margin-top: 10px;
+            margin-top: 5px;
             border-top: 1px solid #B0BEC5;
-            padding-top: 6px;
+            padding-top: 4px;
+        }
+        
+        .expand-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+            font-size: 0.65rem;
+            margin-top: 3px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .expand-btn:hover {
+            background-color: rgba(79, 195, 247, 0.1);
+        }
+        
+        .order-details-full {
+            display: none;
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #F5F5F5;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+        
+        .order-details-full.active {
+            display: block;
         }
         
         .stats {
@@ -355,6 +423,7 @@
             font-weight: 600;
         }
         
+        /* NUEVO DISEÑO PARA EL INFORME DIARIO */
         .report-section {
             background-color: white;
             border-radius: var(--radius);
@@ -363,35 +432,227 @@
             box-shadow: var(--shadow);
         }
         
-        .report-preview {
-            margin-top: 20px;
-            border: 1px solid #E0E0E0;
-            border-radius: 8px;
-            padding: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-            background-color: #FAFAFA;
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
         }
         
-        .report-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .report-table th, .report-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #E0E0E0;
-        }
-        
-        .report-table th {
-            background-color: var(--primary-light);
+        .report-title {
             color: var(--primary-dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .report-subtitle {
+            color: #78909C;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .report-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .report-summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .report-stat-card {
+            background: linear-gradient(135deg, var(--primary-light), #FFFFFF);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E0E0E0;
+            transition: transform 0.3s;
+        }
+        
+        .report-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .report-stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+        
+        .report-stat-label {
+            font-size: 0.8rem;
+            color: var(--dark-color);
             font-weight: 600;
         }
         
-        .report-table tr:hover {
-            background-color: #F5F5F5;
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .order-report-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #E0E0E0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .order-report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .order-report-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+        
+        .order-report-card.ironing::before {
+            background: #FF9800;
+        }
+        
+        .order-report-card.delivered::before {
+            background: #81C784;
+        }
+        
+        .order-report-card.finished::before {
+            background: #4DB6AC;
+        }
+        
+        .order-report-card.washing::before {
+            background: #4FC3F7;
+        }
+        
+        .order-report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .order-report-client {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .order-report-id {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .order-report-badges {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .order-report-badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .badge-ironing {
+            background: #FFF3E0;
+            color: #FF9800;
+            border: 1px solid #FFE0B2;
+        }
+        
+        .badge-service {
+            background: #E1F5FE;
+            color: #0288D1;
+            border: 1px solid #B3E5FC;
+        }
+        
+        .badge-priority {
+            background: #FFEBEE;
+            color: #F44336;
+            border: 1px solid #FFCDD2;
+        }
+        
+        .order-report-details {
+            margin-bottom: 15px;
+        }
+        
+        .order-report-detail {
+            display: flex;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .order-report-detail strong {
+            min-width: 80px;
+            color: var(--dark-color);
+        }
+        
+        .order-report-detail span {
+            color: #546E7A;
+        }
+        
+        .order-report-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .status-reception { background: #FFF3E0; color: #FF9800; }
+        .status-treatment { background: #FFECB3; color: #F57C00; }
+        .status-washing { background: #E1F5FE; color: #0288D1; }
+        .status-drying { background: #E8EAF6; color: #3949AB; }
+        .status-folding { background: #E0F2F1; color: #00897B; }
+        .status-finished { background: #E8F5E8; color: #43A047; }
+        .status-delivered { background: #F5F5F5; color: #616161; }
+        
+        .order-report-time {
+            font-size: 0.75rem;
+            color: #78909C;
+            border-top: 1px solid #E0E0E0;
+            padding-top: 10px;
+        }
+        
+        .order-report-time div {
+            margin-bottom: 3px;
+        }
+        
+        .no-orders-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #78909C;
+            font-style: italic;
+        }
+        
+        .no-orders-message i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #CFD8DC;
         }
         
         footer {
@@ -405,6 +666,10 @@
         @media (max-width: 1200px) {
             .board {
                 grid-template-columns: repeat(4, minmax(200px, 1fr));
+            }
+            
+            .orders-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
         
@@ -421,6 +686,16 @@
             
             .controls {
                 justify-content: center;
+            }
+            
+            .report-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .orders-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -573,37 +848,48 @@
                 <h3 id="delivered-count">0</h3>
                 <p>Entregadas</p>
             </div>
+            <div class="stat-card">
+                <h3 id="avg-process-time">0h</h3>
+                <p>Tiempo Promedio</p>
+            </div>
         </div>
         
+        <!-- NUEVO DISEÑO PARA EL INFORME DIARIO -->
         <div class="report-section">
-            <h2>Vista Previa del Informe Diario</h2>
-            <p>Este informe se generará automáticamente a las 10:00 PM con las órdenes del día (7:00 AM - 10:00 PM)</p>
-            
-            <div class="controls" style="margin-top: 15px;">
-                <button class="btn btn-primary" id="refresh-preview-btn">
-                    <i class="fas fa-sync"></i> Actualizar Vista Previa
-                </button>
-                <button class="btn btn-success" id="test-pdf-btn">
-                    <i class="fas fa-file-download"></i> Generar PDF de Prueba
-                </button>
+            <div class="report-header">
+                <div>
+                    <h2 class="report-title">Informe Diario</h2>
+                    <p class="report-subtitle">Ordenes del día</p>
+                </div>
+                <div class="report-controls">
+                    <button class="btn btn-primary" id="refresh-preview-btn">
+                        <i class="fas fa-sync"></i> Actualizar Vista
+                    </button>
+                    <button class="btn btn-success" id="test-pdf-btn">
+                        <i class="fas fa-file-download"></i> Generar PDF
+                    </button>
+                </div>
             </div>
             
-            <div class="report-preview" id="report-preview">
-                <!-- La vista previa del informe aparecerá aquí -->
+            <div class="report-summary-stats" id="report-summary-stats">
+                <!-- Las estadísticas se generarán aquí dinámicamente -->
+            </div>
+            
+            <div id="report-orders-container">
+                <!-- Las órdenes del día se mostrarán aquí en el nuevo diseño -->
             </div>
         </div>
     </div>
     
     <footer>
         <div class="container">
-            <p>Lavandería Limpio Y Listo (L&L) - Sistema de Gestión &copy; 2023</p>
+            <p>Lavandería Limpio Y Listo (L&L) - Sistema de Gestión &copy; 2025</p>
         </div>
     </footer>
 
     <script>
         // Variables globales
         let orders = [];
-        let nextOrderId = 1;
         let currentBranch = 'jalapa';
         
         // Elementos del DOM
@@ -616,6 +902,8 @@
         const generateReportBtn = document.getElementById('generate-report-btn');
         const refreshPreviewBtn = document.getElementById('refresh-preview-btn');
         const testPdfBtn = document.getElementById('test-pdf-btn');
+        const reportSummaryStats = document.getElementById('report-summary-stats');
+        const reportOrdersContainer = document.getElementById('report-orders-container');
         
         // Columnas
         const receptionColumn = document.getElementById('reception-column');
@@ -631,13 +919,11 @@
         const processCountElement = document.getElementById('process-count');
         const finishedCountElement = document.getElementById('finished-count');
         const deliveredCountElement = document.getElementById('delivered-count');
+        const avgProcessTimeElement = document.getElementById('avg-process-time');
         
         // Botones de control
         const saveDataBtn = document.getElementById('save-data-btn');
         const clearDataBtn = document.getElementById('clear-data-btn');
-        
-        // Vista previa del informe
-        const reportPreview = document.getElementById('report-preview');
         
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -663,8 +949,8 @@
             // Hacer las columnas arrastrables
             makeColumnsDraggable();
             
-            // Configurar la generación automática de informes a las 10:00 PM
-            scheduleDailyReport();
+            // Agregar algunas órdenes de ejemplo para probar
+            addSampleOrders();
         });
         
         // Funciones
@@ -682,6 +968,26 @@
             orderFormElement.reset();
         }
         
+        // FUNCIÓN MEJORADA: Generar número de orden basado en fecha
+        function generateOrderNumber() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            const dateString = `${day}/${month}/${year}`;
+            
+            // Contar órdenes del día actual
+            const todayOrders = orders.filter(order => {
+                const orderDate = order.entryTime.split(',')[0]; // Obtener solo la fecha
+                return orderDate === dateString && order.branch === currentBranch;
+            });
+            
+            // Generar número secuencial (empezando desde 1)
+            const sequentialNumber = String(todayOrders.length + 1).padStart(3, '0');
+            
+            return `${sequentialNumber}/${dateString}`;
+        }
+        
         function handleOrderSubmit(e) {
             e.preventDefault();
             
@@ -691,8 +997,10 @@
             const orderType = document.getElementById('order-type').value;
             const includeIroning = document.getElementById('include-ironing').checked;
             
+            const orderNumber = generateOrderNumber();
+            
             const newOrder = {
-                id: nextOrderId++,
+                id: orderNumber, // Usar el número de orden generado como ID
                 clientName: clientName,
                 clientPhone: clientPhone,
                 orderDetails: orderDetails,
@@ -715,6 +1023,8 @@
             updateReportPreview();
             hideOrderForm();
             saveOrdersToStorage();
+            
+            alert(`Orden agregada correctamente - Número: ${orderNumber}`);
         }
         
         function handleBranchChange(e) {
@@ -767,6 +1077,7 @@
             });
         }
         
+        // FUNCIÓN MEJORADA: Crear tarjeta de orden compacta
         function createOrderCard(order) {
             const card = document.createElement('div');
             card.className = 'order-card';
@@ -777,34 +1088,65 @@
             card.dataset.orderId = order.id;
             
             let statusText = '';
+            let statusClass = '';
             switch(order.status) {
-                case 'reception': statusText = 'Recepción'; break;
-                case 'treatment': statusText = 'Tratamiento'; break;
-                case 'washing': statusText = 'Lavado'; break;
-                case 'drying': statusText = 'Secado'; break;
-                case 'folding': statusText = 'Doblado'; break;
-                case 'finished': statusText = 'Finalizado'; break;
-                case 'delivered': statusText = 'Entregada'; break;
+                case 'reception': 
+                    statusText = 'Recepción'; 
+                    statusClass = 'status-reception';
+                    break;
+                case 'treatment': 
+                    statusText = 'Tratamiento'; 
+                    statusClass = 'status-treatment';
+                    break;
+                case 'washing': 
+                    statusText = 'Lavado'; 
+                    statusClass = 'status-washing';
+                    break;
+                case 'drying': 
+                    statusText = 'Secado'; 
+                    statusClass = 'status-drying';
+                    break;
+                case 'folding': 
+                    statusText = 'Doblado'; 
+                    statusClass = 'status-folding';
+                    break;
+                case 'finished': 
+                    statusText = 'Finalizado'; 
+                    statusClass = 'status-finished';
+                    break;
+                case 'delivered': 
+                    statusText = 'Entregada'; 
+                    statusClass = 'status-delivered';
+                    break;
             }
             
-            const ironingBadge = order.includeIroning ? '<span class="ironing-badge">Planchado</span>' : '';
+            const ironingBadge = order.includeIroning ? '<div class="ironing-badge">Planchado</div>' : '';
             
             card.innerHTML = `
-                <h3>${order.clientName} <span class="order-id">#${order.id}${ironingBadge}</span></h3>
-                <div class="order-details">
-                    <div><strong>Teléfono:</strong> ${order.clientPhone || 'No proporcionado'}</div>
-                    <div><strong>Servicio:</strong> ${getServiceTypeText(order.orderType)}</div>
-                    <div><strong>Detalles:</strong> ${order.orderDetails || 'Sin detalles adicionales'}</div>
-                    <div><strong>Estado:</strong> ${statusText}</div>
+                <div class="order-card-header">
+                    <div class="order-client">${order.clientName}</div>
+                    <div class="order-id">${order.id}</div>
                 </div>
-                <div class="time-stamp">
-                    <div><strong>Recepción:</strong> ${order.entryTime}</div>
-                    ${order.treatmentTime ? `<div><strong>Tratamiento:</strong> ${order.treatmentTime}</div>` : ''}
-                    ${order.washingTime ? `<div><strong>Lavado:</strong> ${order.washingTime}</div>` : ''}
-                    ${order.dryingTime ? `<div><strong>Secado:</strong> ${order.dryingTime}</div>` : ''}
-                    ${order.foldingTime ? `<div><strong>Doblado:</strong> ${order.foldingTime}</div>` : ''}
-                    ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${order.finishedTime}</div>` : ''}
-                    ${order.deliveredTime ? `<div><strong>Entregado:</strong> ${order.deliveredTime}</div>` : ''}
+                <div class="order-badges">
+                    ${ironingBadge}
+                </div>
+                <div class="order-details-compact">
+                    <div><strong>Servicio:</strong> ${getServiceTypeText(order.orderType)}</div>
+                    <div><strong>Teléfono:</strong> ${order.clientPhone || 'N/A'}</div>
+                </div>
+                <div class="order-status ${statusClass}">${statusText}</div>
+                <div class="order-time">
+                    <strong>Recepción:</strong> ${formatTime(order.entryTime)}
+                </div>
+                <button class="expand-btn" onclick="toggleOrderDetails('${order.id}')">Ver más detalles</button>
+                <div class="order-details-full" id="details-${order.id}">
+                    <div><strong>Detalles:</strong> ${order.orderDetails || 'Sin detalles adicionales'}</div>
+                    ${order.treatmentTime ? `<div><strong>Tratamiento:</strong> ${formatTime(order.treatmentTime)}</div>` : ''}
+                    ${order.washingTime ? `<div><strong>Lavado:</strong> ${formatTime(order.washingTime)}</div>` : ''}
+                    ${order.dryingTime ? `<div><strong>Secado:</strong> ${formatTime(order.dryingTime)}</div>` : ''}
+                    ${order.foldingTime ? `<div><strong>Doblado:</strong> ${formatTime(order.foldingTime)}</div>` : ''}
+                    ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${formatTime(order.finishedTime)}</div>` : ''}
+                    ${order.deliveredTime ? `<div><strong>Entregado:</strong> ${formatTime(order.deliveredTime)}</div>` : ''}
                 </div>
             `;
             
@@ -812,6 +1154,33 @@
             card.addEventListener('dragstart', handleDragStart);
             
             return card;
+        }
+        
+        // Función para formatear la hora (solo hora:minutos)
+        function formatTime(dateTimeString) {
+            if (!dateTimeString) return '';
+            const parts = dateTimeString.split(', ');
+            if (parts.length === 2) {
+                const timePart = parts[1].split(':');
+                if (timePart.length >= 2) {
+                    return `${timePart[0]}:${timePart[1]}`;
+                }
+            }
+            return dateTimeString;
+        }
+        
+        // Función para alternar visibilidad de detalles completos
+        function toggleOrderDetails(orderId) {
+            const detailsElement = document.getElementById(`details-${orderId}`);
+            const button = detailsElement.previousElementSibling;
+            
+            if (detailsElement.classList.contains('active')) {
+                detailsElement.classList.remove('active');
+                button.textContent = 'Ver más detalles';
+            } else {
+                detailsElement.classList.add('active');
+                button.textContent = 'Ver menos detalles';
+            }
         }
         
         function getServiceTypeText(type) {
@@ -855,7 +1224,7 @@
             const orderId = e.dataTransfer.getData('text/plain');
             const newStatus = e.target.closest('.column-content').dataset.status;
             
-            updateOrderStatus(parseInt(orderId), newStatus);
+            updateOrderStatus(orderId, newStatus);
         }
         
         function updateOrderStatus(orderId, newStatus) {
@@ -901,88 +1270,239 @@
             const finishedCount = branchOrders.filter(order => order.status === 'finished').length;
             const deliveredCount = branchOrders.filter(order => order.status === 'delivered').length;
             
+            // Calcular tiempo promedio de proceso
+            const avgProcessTime = calculateAverageProcessTime(branchOrders);
+            
             receptionCountElement.textContent = receptionCount;
             processCountElement.textContent = processCount;
             finishedCountElement.textContent = finishedCount;
             deliveredCountElement.textContent = deliveredCount;
+            avgProcessTimeElement.textContent = avgProcessTime;
         }
         
+        function calculateAverageProcessTime(ordersList) {
+            const completedOrders = ordersList.filter(order => 
+                order.status === 'delivered' && order.entryTime && order.deliveredTime);
+            
+            if (completedOrders.length === 0) return '0h';
+            
+            let totalTime = 0;
+            
+            completedOrders.forEach(order => {
+                // Parsear fechas correctamente
+                const entryTime = parseCustomDate(order.entryTime);
+                const deliveredTime = parseCustomDate(order.deliveredTime);
+                
+                if (entryTime && deliveredTime) {
+                    const processTime = (deliveredTime - entryTime) / (1000 * 60 * 60); // en horas
+                    totalTime += processTime;
+                }
+            });
+            
+            const avgTime = totalTime / completedOrders.length;
+            return `${avgTime.toFixed(1)}h`;
+        }
+        
+        // Función para parsear correctamente las fechas
+        function parseCustomDate(dateString) {
+            // Formato: "20/10/2025, 14:30:25"
+            const parts = dateString.split(', ');
+            if (parts.length !== 2) return null;
+            
+            const datePart = parts[0].split('/');
+            const timePart = parts[1].split(':');
+            
+            if (datePart.length !== 3 || timePart.length !== 3) return null;
+            
+            const day = parseInt(datePart[0]);
+            const month = parseInt(datePart[1]) - 1; // Los meses en JS son 0-indexed
+            const year = parseInt(datePart[2]);
+            const hour = parseInt(timePart[0]);
+            const minute = parseInt(timePart[1]);
+            const second = parseInt(timePart[2]);
+            
+            return new Date(year, month, day, hour, minute, second);
+        }
+        
+        // NUEVA FUNCIÓN: Actualizar vista previa del informe con diseño mejorado
         function updateReportPreview() {
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const startOfDay = new Date(today);
-            startOfDay.setHours(7, 0, 0, 0); // 7:00 AM
-            
-            const endOfDay = new Date(today);
-            endOfDay.setHours(22, 0, 0, 0); // 10:00 PM
             
             // Filtrar órdenes del día actual para la sucursal actual
             const todaysOrders = orders.filter(order => {
                 if (order.branch !== currentBranch) return false;
                 
-                const orderTime = new Date(order.entryTime);
-                return orderTime >= startOfDay && orderTime <= endOfDay;
+                try {
+                    const orderTime = parseCustomDate(order.entryTime);
+                    return orderTime && orderTime >= today;
+                } catch (e) {
+                    console.error('Error parsing date:', order.entryTime, e);
+                    return false;
+                }
             });
             
-            // Ordenar por hora de entrada
-            todaysOrders.sort((a, b) => new Date(a.entryTime) - new Date(b.entryTime));
+            // Ordenar por hora de entrada (más recientes primero)
+            todaysOrders.sort((a, b) => {
+                try {
+                    const timeA = parseCustomDate(a.entryTime);
+                    const timeB = parseCustomDate(b.entryTime);
+                    return timeB - timeA;
+                } catch (e) {
+                    return 0;
+                }
+            });
             
-            let previewHTML = `
-                <h3>Informe Diario - ${getBranchName(currentBranch)} - ${now.toLocaleDateString('es-ES')}</h3>
-                <p><strong>Total de órdenes del día:</strong> ${todaysOrders.length}</p>
+            // Calcular estadísticas
+            const receptionCount = todaysOrders.filter(order => order.status === 'reception').length;
+            const processCount = todaysOrders.filter(order => 
+                order.status === 'treatment' || order.status === 'washing' || 
+                order.status === 'drying' || order.status === 'folding').length;
+            const finishedCount = todaysOrders.filter(order => order.status === 'finished').length;
+            const deliveredCount = todaysOrders.filter(order => order.status === 'delivered').length;
+            const ironingCount = todaysOrders.filter(order => order.includeIroning).length;
+            
+            // Actualizar estadísticas en tarjetas
+            updateReportStats(todaysOrders.length, receptionCount, processCount, finishedCount, deliveredCount, ironingCount);
+            
+            // Actualizar grid de órdenes
+            updateOrdersGrid(todaysOrders);
+        }
+        
+        // Función para actualizar las estadísticas del informe
+        function updateReportStats(total, reception, process, finished, delivered, ironing) {
+            reportSummaryStats.innerHTML = `
+                <div class="report-stat-card">
+                    <div class="report-stat-value">${total}</div>
+                    <div class="report-stat-label">Total Órdenes</div>
+                </div>
+                <div class="report-stat-card">
+                    <div class="report-stat-value">${reception}</div>
+                    <div class="report-stat-label">En Recepción</div>
+                </div>
+                <div class="report-stat-card">
+                    <div class="report-stat-value">${process}</div>
+                    <div class="report-stat-label">En Proceso</div>
+                </div>
+                <div class="report-stat-card">
+                    <div class="report-stat-value">${finished}</div>
+                    <div class="report-stat-label">Finalizadas</div>
+                </div>
+                <div class="report-stat-card">
+                    <div class="report-stat-value">${delivered}</div>
+                    <div class="report-stat-label">Entregadas</div>
+                </div>
+                <div class="report-stat-card">
+                    <div class="report-stat-value">${ironing}</div>
+                    <div class="report-stat-label">Con Planchado</div>
+                </div>
             `;
-            
-            if (todaysOrders.length > 0) {
-                previewHTML += `
-                    <table class="report-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Cliente</th>
-                                <th>Servicio</th>
-                                <th>Planchado</th>
-                                <th>Estado</th>
-                                <th>Hora Recepción</th>
-                                <th>Hora Entrega</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+        }
+        
+        // Función para actualizar el grid de órdenes
+        function updateOrdersGrid(ordersList) {
+            if (ordersList.length === 0) {
+                reportOrdersContainer.innerHTML = `
+                    <div class="no-orders-message">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No hay órdenes para mostrar</h3>
+                        <p>No se han registrado órdenes para el día de hoy</p>
+                    </div>
                 `;
-                
-                todaysOrders.forEach(order => {
-                    let statusText = '';
-                    switch(order.status) {
-                        case 'reception': statusText = 'Recepción'; break;
-                        case 'treatment': statusText = 'Tratamiento'; break;
-                        case 'washing': statusText = 'Lavado'; break;
-                        case 'drying': statusText = 'Secado'; break;
-                        case 'folding': statusText = 'Doblado'; break;
-                        case 'finished': statusText = 'Finalizado'; break;
-                        case 'delivered': statusText = 'Entregada'; break;
-                    }
-                    
-                    previewHTML += `
-                        <tr>
-                            <td>${order.id}</td>
-                            <td>${order.clientName}</td>
-                            <td>${getServiceTypeText(order.orderType)}</td>
-                            <td>${order.includeIroning ? 'Sí' : 'No'}</td>
-                            <td>${statusText}</td>
-                            <td>${order.entryTime}</td>
-                            <td>${order.deliveredTime || '-'}</td>
-                        </tr>
-                    `;
-                });
-                
-                previewHTML += `
-                        </tbody>
-                    </table>
-                `;
-            } else {
-                previewHTML += `<p>No hay órdenes para mostrar en el día de hoy.</p>`;
+                return;
             }
             
-            reportPreview.innerHTML = previewHTML;
+            let ordersHTML = `
+                <h3 style="margin-bottom: 20px; color: var(--dark-color);">Órdenes del Día (${ordersList.length})</h3>
+                <div class="orders-grid">
+            `;
+            
+            ordersList.forEach(order => {
+                let statusText = '';
+                let statusClass = '';
+                let cardClass = '';
+                
+                switch(order.status) {
+                    case 'reception': 
+                        statusText = 'Recepción'; 
+                        statusClass = 'status-reception';
+                        break;
+                    case 'treatment': 
+                        statusText = 'Tratamiento'; 
+                        statusClass = 'status-treatment';
+                        break;
+                    case 'washing': 
+                        statusText = 'Lavado'; 
+                        statusClass = 'status-washing';
+                        cardClass = 'washing';
+                        break;
+                    case 'drying': 
+                        statusText = 'Secado'; 
+                        statusClass = 'status-drying';
+                        break;
+                    case 'folding': 
+                        statusText = 'Doblado'; 
+                        statusClass = 'status-folding';
+                        break;
+                    case 'finished': 
+                        statusText = 'Finalizado'; 
+                        statusClass = 'status-finished';
+                        cardClass = 'finished';
+                        break;
+                    case 'delivered': 
+                        statusText = 'Entregada'; 
+                        statusClass = 'status-delivered';
+                        cardClass = 'delivered';
+                        break;
+                }
+                
+                if (order.includeIroning) {
+                    cardClass += ' ironing';
+                }
+                
+                const ironingBadge = order.includeIroning ? 
+                    '<div class="order-report-badge badge-ironing">Planchado</div>' : '';
+                
+                ordersHTML += `
+                    <div class="order-report-card ${cardClass}">
+                        <div class="order-report-header">
+                            <div class="order-report-client">${order.clientName}</div>
+                            <div class="order-report-id">${order.id}</div>
+                        </div>
+                        
+                        <div class="order-report-badges">
+                            ${ironingBadge}
+                            <div class="order-report-badge badge-service">${getServiceTypeText(order.orderType)}</div>
+                        </div>
+                        
+                        <div class="order-report-details">
+                            <div class="order-report-detail">
+                                <strong>Teléfono:</strong>
+                                <span>${order.clientPhone || 'No proporcionado'}</span>
+                            </div>
+                            <div class="order-report-detail">
+                                <strong>Detalles:</strong>
+                                <span>${order.orderDetails || 'Sin detalles adicionales'}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-report-status ${statusClass}">${statusText}</div>
+                        
+                        <div class="order-report-time">
+                            <div><strong>Recepción:</strong> ${order.entryTime}</div>
+                            ${order.treatmentTime ? `<div><strong>Tratamiento:</strong> ${order.treatmentTime}</div>` : ''}
+                            ${order.washingTime ? `<div><strong>Lavado:</strong> ${order.washingTime}</div>` : ''}
+                            ${order.dryingTime ? `<div><strong>Secado:</strong> ${order.dryingTime}</div>` : ''}
+                            ${order.foldingTime ? `<div><strong>Doblado:</strong> ${order.foldingTime}</div>` : ''}
+                            ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${order.finishedTime}</div>` : ''}
+                            ${order.deliveredTime ? `<div><strong>Entregado:</strong> ${order.deliveredTime}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            ordersHTML += `</div>`;
+            reportOrdersContainer.innerHTML = ordersHTML;
         }
         
         function generateDailyReport() {
@@ -991,22 +1511,29 @@
             
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const startOfDay = new Date(today);
-            startOfDay.setHours(7, 0, 0, 0); // 7:00 AM
-            
-            const endOfDay = new Date(today);
-            endOfDay.setHours(22, 0, 0, 0); // 10:00 PM
             
             // Filtrar órdenes del día actual para la sucursal actual
             const todaysOrders = orders.filter(order => {
                 if (order.branch !== currentBranch) return false;
                 
-                const orderTime = new Date(order.entryTime);
-                return orderTime >= startOfDay && orderTime <= endOfDay;
+                try {
+                    const orderTime = parseCustomDate(order.entryTime);
+                    return orderTime && orderTime >= today;
+                } catch (e) {
+                    return false;
+                }
             });
             
             // Ordenar por hora de entrada
-            todaysOrders.sort((a, b) => new Date(a.entryTime) - new Date(b.entryTime));
+            todaysOrders.sort((a, b) => {
+                try {
+                    const timeA = parseCustomDate(a.entryTime);
+                    const timeB = parseCustomDate(b.entryTime);
+                    return timeA - timeB;
+                } catch (e) {
+                    return 0;
+                }
+            });
             
             // Título
             doc.setFontSize(18);
@@ -1069,42 +1596,99 @@
             generateDailyReport();
         }
         
-        function scheduleDailyReport() {
-            // Esta función configuraría la generación automática a las 10:00 PM
-            // En un entorno real, esto se haría en el servidor
-            // Para esta demo, solo mostraremos un mensaje
-            console.log("La generación automática de informes está programada para las 10:00 PM");
-        }
-        
         function saveOrdersToStorage() {
             localStorage.setItem('ll-orders', JSON.stringify(orders));
-            localStorage.setItem('ll-nextOrderId', nextOrderId);
             alert('Datos guardados correctamente');
         }
         
         function loadOrdersFromStorage() {
             const savedOrders = localStorage.getItem('ll-orders');
-            const savedNextOrderId = localStorage.getItem('ll-nextOrderId');
             
             if (savedOrders) {
                 orders = JSON.parse(savedOrders);
-            }
-            
-            if (savedNextOrderId) {
-                nextOrderId = parseInt(savedNextOrderId);
             }
         }
         
         function clearAllData() {
             if (confirm('¿Está seguro de que desea eliminar todos los datos? Esta acción no se puede deshacer.')) {
                 orders = [];
-                nextOrderId = 1;
                 renderOrders();
                 updateStats();
                 updateReportPreview();
                 localStorage.removeItem('ll-orders');
-                localStorage.removeItem('ll-nextOrderId');
                 alert('Todos los datos han sido eliminados');
+            }
+        }
+        
+        // Función para agregar órdenes de ejemplo
+        function addSampleOrders() {
+            // Solo agregar órdenes de ejemplo si no hay órdenes existentes
+            if (orders.length === 0) {
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                const dateString = `${day}/${month}/${year}`;
+                
+                const sampleOrders = [
+                    {
+                        id: `001/${dateString}`,
+                        clientName: 'María González',
+                        clientPhone: '1234-5678',
+                        orderDetails: '3 camisas, 2 pantalones',
+                        orderType: 'lavado',
+                        includeIroning: true,
+                        status: 'delivered',
+                        branch: 'jalapa',
+                        entryTime: new Date().toLocaleString('es-ES'),
+                        treatmentTime: new Date(Date.now() + 30*60000).toLocaleString('es-ES'),
+                        washingTime: new Date(Date.now() + 60*60000).toLocaleString('es-ES'),
+                        dryingTime: new Date(Date.now() + 90*60000).toLocaleString('es-ES'),
+                        foldingTime: new Date(Date.now() + 120*60000).toLocaleString('es-ES'),
+                        finishedTime: new Date(Date.now() + 150*60000).toLocaleString('es-ES'),
+                        deliveredTime: new Date(Date.now() + 180*60000).toLocaleString('es-ES')
+                    },
+                    {
+                        id: `002/${dateString}`,
+                        clientName: 'Carlos López',
+                        clientPhone: '8765-4321',
+                        orderDetails: 'Cobijas y edredones',
+                        orderType: 'completo',
+                        includeIroning: false,
+                        status: 'washing',
+                        branch: 'jalapa',
+                        entryTime: new Date().toLocaleString('es-ES'),
+                        treatmentTime: new Date(Date.now() + 15*60000).toLocaleString('es-ES'),
+                        washingTime: new Date(Date.now() + 45*60000).toLocaleString('es-ES'),
+                        dryingTime: '',
+                        foldingTime: '',
+                        finishedTime: '',
+                        deliveredTime: ''
+                    },
+                    {
+                        id: `003/${dateString}`,
+                        clientName: 'Ana Martínez',
+                        clientPhone: '5555-1234',
+                        orderDetails: 'Traje formal',
+                        orderType: 'lavado-seco',
+                        includeIroning: true,
+                        status: 'reception',
+                        branch: 'jalapa',
+                        entryTime: new Date().toLocaleString('es-ES'),
+                        treatmentTime: '',
+                        washingTime: '',
+                        dryingTime: '',
+                        foldingTime: '',
+                        finishedTime: '',
+                        deliveredTime: ''
+                    }
+                ];
+                
+                orders.push(...sampleOrders);
+                renderOrders();
+                updateStats();
+                updateReportPreview();
+                saveOrdersToStorage();
             }
         }
     </script>
