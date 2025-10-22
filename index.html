@@ -6,31 +6,33 @@
     <title>Lavandería Limpio Y Listo - Sistema de Gestión</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4FC3F7;
-            --primary-light: #E1F5FE;
-            --primary-dark: #0288D1;
-            --secondary-color: #81C784;
-            --accent-color: #FF9800;
-            --light-color: #FFFFFF;
-            --dark-color: #37474F;
+            --white: #FFFFFF;
+            --yellow: #F9AE1F;
+            --green: #47AE4D;
+            --blue: #51C1E4;
+            --dark-blue: #113B60;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --radius: 12px;
+            --purple: #8E44AD;
+            --red: #e74c3c;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, var(--primary-light) 0%, #FFFFFF 100%);
-            color: var(--dark-color);
+            background: linear-gradient(135deg, var(--blue) 0%, var(--white) 100%);
+            color: var(--dark-blue);
             line-height: 1.6;
             min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
         }
         
         .container {
@@ -41,12 +43,13 @@
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-            color: white;
+            background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+            color: var(--white);
             padding: 20px 0;
             box-shadow: var(--shadow);
             border-radius: 0 0 var(--radius) var(--radius);
             margin-bottom: 30px;
+            border-bottom: 3px solid var(--yellow);
         }
         
         .header-content {
@@ -61,28 +64,27 @@
             gap: 15px;
         }
         
-        .logo-icon {
-            font-size: 2.5rem;
-            background: white;
-            color: var(--primary-color);
+        .logo-image {
             width: 70px;
             height: 70px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             box-shadow: var(--shadow);
+            border: 2px solid var(--dark-blue);
+            object-fit: cover;
         }
         
         .logo-text h1 {
             font-size: 2rem;
             margin-bottom: 5px;
-            font-weight: 700;
+            font-weight: 800;
+            text-shadow: 1px 1px 2px var(--dark-blue);
+            color: var(--white);
         }
         
         .logo-text p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            color: var(--white);
+            font-weight: 500;
         }
         
         .branch-selector {
@@ -93,16 +95,18 @@
             padding: 10px 15px;
             border-radius: 50px;
             backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .branch-selector select {
-            background: white;
+            background: var(--white);
             border: none;
             padding: 8px 15px;
             border-radius: 50px;
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--dark-blue);
             cursor: pointer;
+            font-family: 'Poppins', sans-serif;
         }
         
         .controls {
@@ -123,45 +127,76 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-family: 'Poppins', sans-serif;
         }
         
         .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: var(--blue);
+            color: var(--white);
+            border: 2px solid var(--dark-blue);
         }
         
         .btn-primary:hover {
-            background-color: var(--primary-dark);
+            background-color: var(--dark-blue);
             transform: translateY(-2px);
         }
         
         .btn-success {
-            background-color: var(--secondary-color);
-            color: white;
+            background-color: var(--green);
+            color: var(--white);
+            border: 2px solid var(--dark-blue);
         }
         
         .btn-success:hover {
-            background-color: #66BB6A;
+            background-color: #3d9c42;
             transform: translateY(-2px);
         }
         
         .btn-danger {
-            background-color: var(--accent-color);
-            color: white;
+            background-color: var(--yellow);
+            color: var(--dark-blue);
+            border: 2px solid var(--dark-blue);
         }
         
         .btn-danger:hover {
-            background-color: #F57C00;
+            background-color: #e89e1c;
+            transform: translateY(-2px);
+        }
+        
+        .btn-pdf {
+            background-color: var(--red);
+            color: var(--white);
+            border: 2px solid var(--dark-blue);
+        }
+        
+        .btn-pdf:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-deliver {
+            background-color: var(--purple);
+            color: var(--white);
+            border: 2px solid var(--dark-blue);
+            padding: 8px 15px;
+            font-size: 0.7rem;
+            margin-top: 8px;
+            width: 100%;
+        }
+        
+        .btn-deliver:hover {
+            background-color: #7d3c98;
             transform: translateY(-2px);
         }
         
         .form-container {
-            background-color: white;
+            background-color: var(--white);
             border-radius: var(--radius);
             padding: 25px;
             margin-bottom: 30px;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary-color);
+            border-left: 5px solid var(--blue);
+            border: 2px solid var(--dark-blue);
         }
         
         .form-group {
@@ -172,39 +207,42 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: var(--dark-color);
+            color: var(--dark-blue);
+            font-family: 'Poppins', sans-serif;
         }
         
         .form-control {
             width: 100%;
             padding: 12px 15px;
-            border: 1px solid #E0E0E0;
+            border: 2px solid var(--blue);
             border-radius: 8px;
             font-size: 1rem;
             transition: border 0.3s;
+            font-family: 'Poppins', sans-serif;
         }
         
         .form-control:focus {
-            border-color: var(--primary-color);
+            border-color: var(--dark-blue);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+            box-shadow: 0 0 0 2px rgba(81, 193, 228, 0.2);
         }
         
         .board {
             display: grid;
-            grid-template-columns: repeat(7, minmax(200px, 1fr));
+            grid-template-columns: repeat(6, minmax(200px, 1fr));
             gap: 15px;
             overflow-x: auto;
             padding-bottom: 20px;
         }
         
         .column {
-            background-color: white;
+            background-color: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow: hidden;
             transition: transform 0.3s;
             min-width: 200px;
+            border: 2px solid var(--dark-blue);
         }
         
         .column:hover {
@@ -213,38 +251,35 @@
         
         .column-header {
             padding: 15px;
-            color: white;
+            color: var(--white);
             font-weight: 700;
             text-align: center;
             font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
         }
         
         .reception .column-header {
-            background: linear-gradient(135deg, #FFB74D, #FF9800);
+            background: linear-gradient(135deg, var(--yellow), #e89e1c);
         }
         
         .treatment .column-header {
-            background: linear-gradient(135deg, #FF9800, #F57C00);
+            background: linear-gradient(135deg, #e89e1c, #d18c1a);
         }
         
         .washing .column-header {
-            background: linear-gradient(135deg, #4FC3F7, #0288D1);
+            background: linear-gradient(135deg, var(--blue), #3a9cc4);
         }
         
         .drying .column-header {
-            background: linear-gradient(135deg, #7986CB, #3949AB);
+            background: linear-gradient(135deg, #3a9cc4, #2d7a9a);
         }
         
         .folding .column-header {
-            background: linear-gradient(135deg, #4DB6AC, #00897B);
+            background: linear-gradient(135deg, var(--green), #3d9c42);
         }
         
         .finished .column-header {
-            background: linear-gradient(135deg, #81C784, #43A047);
-        }
-        
-        .delivered .column-header {
-            background: linear-gradient(135deg, #9E9E9E, #616161);
+            background: linear-gradient(135deg, #3d9c42, #2e7d32);
         }
         
         .column-content {
@@ -254,17 +289,23 @@
             overflow-y: auto;
         }
         
+        .column-content.drag-over {
+            background-color: rgba(81, 193, 228, 0.2);
+            border: 2px dashed var(--blue);
+        }
+        
         /* ESTILOS COMPACTOS PARA ÓRDENES */
         .order-card {
-            background-color: var(--primary-light);
+            background-color: rgba(81, 193, 228, 0.1);
             border-radius: 8px;
             padding: 10px;
             margin-bottom: 8px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border-left: 3px solid var(--primary-color);
+            border-left: 3px solid var(--blue);
             cursor: move;
             transition: all 0.3s;
             font-size: 0.75rem;
+            border: 1px solid var(--blue);
         }
         
         .order-card:hover {
@@ -273,8 +314,13 @@
         }
         
         .order-card.ironing-service {
-            border-left: 3px solid #FF9800;
-            background-color: #FFF3E0;
+            border-left: 3px solid var(--yellow);
+            background-color: rgba(249, 174, 31, 0.1);
+        }
+        
+        .order-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
         }
         
         .order-card-header {
@@ -285,18 +331,18 @@
         }
         
         .order-client {
-            font-weight: 600;
-            color: var(--dark-color);
+            font-weight: 700;
+            color: var(--dark-blue);
             font-size: 0.8rem;
         }
         
         .order-id {
-            background: var(--primary-color);
-            color: white;
+            background: var(--blue);
+            color: var(--white);
             padding: 2px 6px;
             border-radius: 10px;
             font-size: 0.65rem;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .order-badges {
@@ -306,11 +352,12 @@
         }
         
         .ironing-badge {
-            background: #FF9800;
-            color: white;
+            background: var(--yellow);
+            color: var(--dark-blue);
             padding: 1px 4px;
             border-radius: 6px;
             font-size: 0.6rem;
+            font-weight: 600;
         }
         
         .priority-badge {
@@ -321,9 +368,18 @@
             font-size: 0.6rem;
         }
         
+        .delivery-badge {
+            background: var(--purple);
+            color: white;
+            padding: 1px 4px;
+            border-radius: 6px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        
         .order-details-compact {
             font-size: 0.7rem;
-            color: #546E7A;
+            color: var(--dark-blue);
             margin-bottom: 5px;
         }
         
@@ -334,38 +390,37 @@
         
         .order-details-compact strong {
             min-width: 50px;
-            color: var(--dark-color);
+            color: var(--dark-blue);
             font-size: 0.65rem;
         }
         
         .order-status {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.7rem;
             margin-top: 3px;
         }
         
-        .status-reception { color: #FF9800; }
-        .status-treatment { color: #F57C00; }
-        .status-washing { color: #0288D1; }
-        .status-drying { color: #3949AB; }
-        .status-folding { color: #00897B; }
-        .status-finished { color: #43A047; }
-        .status-delivered { color: #616161; }
+        .status-reception { color: var(--yellow); }
+        .status-treatment { color: #e89e1c; }
+        .status-washing { color: var(--blue); }
+        .status-drying { color: #3a9cc4; }
+        .status-folding { color: var(--green); }
+        .status-finished { color: #3d9c42; }
         
         .order-time {
             font-size: 0.6rem;
-            color: #78909C;
+            color: var(--dark-blue);
             margin-top: 5px;
-            border-top: 1px solid #B0BEC5;
+            border-top: 1px solid var(--blue);
             padding-top: 4px;
         }
         
         .expand-btn {
             background: none;
             border: none;
-            color: var(--primary-color);
+            color: var(--blue);
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             padding: 2px 6px;
             border-radius: 4px;
             transition: background-color 0.2s;
@@ -373,23 +428,46 @@
             margin-top: 3px;
             width: 100%;
             text-align: center;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
         
         .expand-btn:hover {
-            background-color: rgba(79, 195, 247, 0.1);
+            background-color: rgba(81, 193, 228, 0.1);
+        }
+        
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            width: 12px;
+            height: 12px;
+        }
+        
+        .toggle-icon.expanded {
+            transform: rotate(180deg);
         }
         
         .order-details-full {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
             margin-top: 8px;
-            padding: 8px;
-            background-color: #F5F5F5;
+            padding: 0 8px;
+            background-color: rgba(81, 193, 228, 0.05);
             border-radius: 4px;
             font-size: 0.7rem;
+            border: 1px solid var(--blue);
         }
         
-        .order-details-full.active {
-            display: block;
+        .order-details-full.expanded {
+            max-height: 300px;
+            padding: 8px;
+        }
+        
+        .order-details-full div {
+            margin-bottom: 5px;
         }
         
         .stats {
@@ -400,12 +478,13 @@
         }
         
         .stat-card {
-            background-color: white;
+            background-color: var(--white);
             border-radius: var(--radius);
             padding: 25px;
             box-shadow: var(--shadow);
             text-align: center;
             transition: transform 0.3s;
+            border: 2px solid var(--dark-blue);
         }
         
         .stat-card:hover {
@@ -414,22 +493,24 @@
         
         .stat-card h3 {
             font-size: 2.5rem;
-            color: var(--primary-color);
+            color: var(--blue);
             margin-bottom: 10px;
+            font-weight: 800;
         }
         
         .stat-card p {
-            color: #607D8B;
+            color: var(--dark-blue);
             font-weight: 600;
         }
         
         /* NUEVO DISEÑO PARA EL INFORME DIARIO */
         .report-section {
-            background-color: white;
+            background-color: var(--white);
             border-radius: var(--radius);
             padding: 25px;
             margin-top: 40px;
             box-shadow: var(--shadow);
+            border: 2px solid var(--dark-blue);
         }
         
         .report-header {
@@ -438,19 +519,20 @@
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid var(--primary-light);
+            border-bottom: 2px solid var(--blue);
         }
         
         .report-title {
-            color: var(--primary-dark);
+            color: var(--dark-blue);
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
         }
         
         .report-subtitle {
-            color: #78909C;
+            color: var(--dark-blue);
             font-size: 0.9rem;
             margin-top: 5px;
+            font-weight: 500;
         }
         
         .report-controls {
@@ -466,12 +548,12 @@
         }
         
         .report-stat-card {
-            background: linear-gradient(135deg, var(--primary-light), #FFFFFF);
+            background: linear-gradient(135deg, rgba(81, 193, 228, 0.1), var(--white));
             border-radius: 10px;
             padding: 15px;
             text-align: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid #E0E0E0;
+            border: 1px solid var(--blue);
             transition: transform 0.3s;
         }
         
@@ -482,14 +564,14 @@
         
         .report-stat-value {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-dark);
+            font-weight: 800;
+            color: var(--dark-blue);
             margin-bottom: 5px;
         }
         
         .report-stat-label {
             font-size: 0.8rem;
-            color: var(--dark-color);
+            color: var(--dark-blue);
             font-weight: 600;
         }
         
@@ -501,11 +583,11 @@
         }
         
         .order-report-card {
-            background: white;
+            background: var(--white);
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            border: 1px solid #E0E0E0;
+            border: 1px solid var(--blue);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -523,23 +605,27 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: var(--primary-color);
+            background: var(--blue);
         }
         
         .order-report-card.ironing::before {
-            background: #FF9800;
+            background: var(--yellow);
         }
         
         .order-report-card.delivered::before {
-            background: #81C784;
+            background: var(--green);
         }
         
         .order-report-card.finished::before {
-            background: #4DB6AC;
+            background: var(--green);
         }
         
         .order-report-card.washing::before {
-            background: #4FC3F7;
+            background: var(--blue);
+        }
+        
+        .order-report-card.delivery::before {
+            background: var(--purple);
         }
         
         .order-report-header {
@@ -551,17 +637,17 @@
         
         .order-report-client {
             font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--dark-color);
+            font-weight: 800;
+            color: var(--dark-blue);
         }
         
         .order-report-id {
-            background: var(--primary-color);
-            color: white;
+            background: var(--blue);
+            color: var(--white);
             padding: 4px 8px;
             border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .order-report-badges {
@@ -574,25 +660,31 @@
             padding: 3px 8px;
             border-radius: 12px;
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
         }
         
         .badge-ironing {
-            background: #FFF3E0;
-            color: #FF9800;
-            border: 1px solid #FFE0B2;
+            background: rgba(249, 174, 31, 0.2);
+            color: var(--yellow);
+            border: 1px solid var(--yellow);
         }
         
         .badge-service {
-            background: #E1F5FE;
-            color: #0288D1;
-            border: 1px solid #B3E5FC;
+            background: rgba(81, 193, 228, 0.2);
+            color: var(--blue);
+            border: 1px solid var(--blue);
         }
         
         .badge-priority {
             background: #FFEBEE;
             color: #F44336;
             border: 1px solid #FFCDD2;
+        }
+        
+        .badge-delivery {
+            background: rgba(142, 68, 173, 0.2);
+            color: var(--purple);
+            border: 1px solid var(--purple);
         }
         
         .order-report-details {
@@ -607,11 +699,11 @@
         
         .order-report-detail strong {
             min-width: 80px;
-            color: var(--dark-color);
+            color: var(--dark-blue);
         }
         
         .order-report-detail span {
-            color: #546E7A;
+            color: var(--dark-blue);
         }
         
         .order-report-status {
@@ -619,22 +711,21 @@
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 10px;
         }
         
-        .status-reception { background: #FFF3E0; color: #FF9800; }
-        .status-treatment { background: #FFECB3; color: #F57C00; }
-        .status-washing { background: #E1F5FE; color: #0288D1; }
-        .status-drying { background: #E8EAF6; color: #3949AB; }
-        .status-folding { background: #E0F2F1; color: #00897B; }
-        .status-finished { background: #E8F5E8; color: #43A047; }
-        .status-delivered { background: #F5F5F5; color: #616161; }
+        .status-reception { background: rgba(249, 174, 31, 0.2); color: var(--yellow); }
+        .status-treatment { background: rgba(232, 158, 28, 0.2); color: #e89e1c; }
+        .status-washing { background: rgba(81, 193, 228, 0.2); color: var(--blue); }
+        .status-drying { background: rgba(58, 156, 196, 0.2); color: #3a9cc4; }
+        .status-folding { background: rgba(71, 174, 77, 0.2); color: var(--green); }
+        .status-finished { background: rgba(61, 156, 66, 0.2); color: #3d9c42; }
         
         .order-report-time {
             font-size: 0.75rem;
-            color: #78909C;
-            border-top: 1px solid #E0E0E0;
+            color: var(--dark-blue);
+            border-top: 1px solid var(--blue);
             padding-top: 10px;
         }
         
@@ -645,22 +736,87 @@
         .no-orders-message {
             text-align: center;
             padding: 40px 20px;
-            color: #78909C;
+            color: var(--dark-blue);
             font-style: italic;
         }
         
         .no-orders-message i {
             font-size: 3rem;
             margin-bottom: 15px;
-            color: #CFD8DC;
+            color: var(--blue);
+        }
+        
+        /* SECCIÓN DE ENTREGADOS */
+        .delivered-section {
+            background-color: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--green);
+        }
+        
+        .delivered-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--green);
+        }
+        
+        .delivered-title {
+            color: var(--dark-blue);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        
+        .delivered-subtitle {
+            color: var(--dark-blue);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .delivered-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .delivered-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--green);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .delivered-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--green);
+        }
+        
+        .delivered-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
         }
         
         footer {
             text-align: center;
             margin-top: 40px;
             padding: 20px;
-            color: #78909C;
-            border-top: 1px solid #E0E0E0;
+            color: var(--dark-blue);
+            border-top: 2px solid var(--blue);
+            font-weight: 500;
         }
         
         @media (max-width: 1200px) {
@@ -668,7 +824,7 @@
                 grid-template-columns: repeat(4, minmax(200px, 1fr));
             }
             
-            .orders-grid {
+            .orders-grid, .delivered-grid {
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
         }
@@ -688,13 +844,13 @@
                 justify-content: center;
             }
             
-            .report-header {
+            .report-header, .delivered-header {
                 flex-direction: column;
                 gap: 15px;
                 text-align: center;
             }
             
-            .orders-grid {
+            .orders-grid, .delivered-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -705,7 +861,10 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <div class="logo-icon">L&L</div>
+                    <!-- SOLO SE MODIFICÓ EL LOGO - El resto permanece igual -->
+                    <img src="C:\Users\Marvin Nicaragua\Documents\Proyectos\Logos\LimpioyListo-Socials-03_Icono.png" 
+                         alt="Logo Limpio y Listo" 
+                         class="logo-image">
                     <div class="logo-text">
                         <h1>Lavandería Limpio Y Listo</h1>
                         <p>Sistema de Gestión de Órdenes</p>
@@ -724,6 +883,7 @@
         </div>
     </header>
     
+    <!-- EL RESTO DEL CÓDIGO PERMANECE EXACTAMENTE IGUAL -->
     <div class="container">
         <div class="controls">
             <button class="btn btn-primary" id="add-order-btn">
@@ -733,7 +893,13 @@
                 <i class="fas fa-save"></i> Guardar Datos
             </button>
             <button class="btn btn-primary" id="generate-report-btn">
-                <i class="fas fa-file-pdf"></i> Generar Informe PDF
+                <i class="fas fa-file-excel"></i> Generar Informe
+            </button>
+            <button class="btn btn-pdf" id="generate-pdf-daily-btn">
+                <i class="fas fa-file-pdf"></i> PDF Órdenes del Día
+            </button>
+            <button class="btn btn-pdf" id="generate-pdf-delivered-btn">
+                <i class="fas fa-file-pdf"></i> PDF Órdenes Entregadas
             </button>
             <button class="btn btn-danger" id="clear-data-btn">
                 <i class="fas fa-trash"></i> Limpiar Todo
@@ -752,16 +918,38 @@
                     <input type="tel" id="client-phone" class="form-control">
                 </div>
                 <div class="form-group">
+                    <label for="responsible">Responsable</label>
+                    <input type="text" id="responsible" class="form-control" required>
+                </div>
+                <div class="form-group">
                     <label for="order-details">Detalles de la Orden</label>
                     <textarea id="order-details" class="form-control" rows="3" placeholder="Descripción de la ropa, instrucciones especiales, etc."></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="order-type">Tipo de Servicio</label>
-                    <select id="order-type" class="form-control">
-                        <option value="lavado">Lavado Básico</option>
-                        <option value="lavado-seco">Lavado en Seco</option>
+                    <label for="service-type">Tipo de Servicio</label>
+                    <select id="service-type" class="form-control">
+                        <option value="lavado">Lavado</option>
+                        <option value="secado">Secado</option>
+                        <option value="doblado">Doblado</option>
+                        <option value="centrifugado">Centrifugado</option>
                         <option value="planchado">Planchado</option>
-                        <option value="completo">Servicio Completo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="garment-type">Tipo de Prenda</label>
+                    <select id="garment-type" class="form-control">
+                        <option value="ropa-basica">Ropa Básica</option>
+                        <option value="edredones">Edredones</option>
+                        <option value="peluches">Peluches</option>
+                        <option value="prenda-especial">Prenda Especial</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="wash-type">Tipo de Lavado</label>
+                    <select id="wash-type" class="form-control">
+                        <option value="estandar">Estandar</option>
+                        <option value="premium">Premium</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -783,51 +971,32 @@
         <div class="board">
             <div class="column reception">
                 <div class="column-header">Recepción</div>
-                <div class="column-content" id="reception-column" data-status="reception">
-                    <!-- Las órdenes en recepción aparecerán aquí -->
-                </div>
+                <div class="column-content" id="reception-column" data-status="reception"></div>
             </div>
             
             <div class="column treatment">
                 <div class="column-header">Tratamiento</div>
-                <div class="column-content" id="treatment-column" data-status="treatment">
-                    <!-- Las órdenes en tratamiento aparecerán aquí -->
-                </div>
+                <div class="column-content" id="treatment-column" data-status="treatment"></div>
             </div>
             
             <div class="column washing">
                 <div class="column-header">Lavado</div>
-                <div class="column-content" id="washing-column" data-status="washing">
-                    <!-- Las órdenes en lavado aparecerán aquí -->
-                </div>
+                <div class="column-content" id="washing-column" data-status="washing"></div>
             </div>
             
             <div class="column drying">
                 <div class="column-header">Secado</div>
-                <div class="column-content" id="drying-column" data-status="drying">
-                    <!-- Las órdenes en secado aparecerán aquí -->
-                </div>
+                <div class="column-content" id="drying-column" data-status="drying"></div>
             </div>
             
             <div class="column folding">
                 <div class="column-header">Doblado</div>
-                <div class="column-content" id="folding-column" data-status="folding">
-                    <!-- Las órdenes en doblado aparecerán aquí -->
-                </div>
+                <div class="column-content" id="folding-column" data-status="folding"></div>
             </div>
             
             <div class="column finished">
                 <div class="column-header">Finalizado</div>
-                <div class="column-content" id="finished-column" data-status="finished">
-                    <!-- Las órdenes finalizadas aparecerán aquí -->
-                </div>
-            </div>
-            
-            <div class="column delivered">
-                <div class="column-header">Entregada</div>
-                <div class="column-content" id="delivered-column" data-status="delivered">
-                    <!-- Las órdenes entregadas aparecerán aquí -->
-                </div>
+                <div class="column-content" id="finished-column" data-status="finished"></div>
             </div>
         </div>
         
@@ -854,30 +1023,35 @@
             </div>
         </div>
         
-        <!-- NUEVO DISEÑO PARA EL INFORME DIARIO -->
         <div class="report-section">
             <div class="report-header">
                 <div>
                     <h2 class="report-title">Informe Diario</h2>
-                    <p class="report-subtitle">Ordenes del día</p>
+                    <p class="report-subtitle">Órdenes del día</p>
                 </div>
                 <div class="report-controls">
                     <button class="btn btn-primary" id="refresh-preview-btn">
                         <i class="fas fa-sync"></i> Actualizar Vista
                     </button>
-                    <button class="btn btn-success" id="test-pdf-btn">
-                        <i class="fas fa-file-download"></i> Generar PDF
-                    </button>
                 </div>
             </div>
             
-            <div class="report-summary-stats" id="report-summary-stats">
-                <!-- Las estadísticas se generarán aquí dinámicamente -->
+            <div class="report-summary-stats" id="report-summary-stats"></div>
+            <div id="report-orders-container"></div>
+        </div>
+        
+        <div class="delivered-section">
+            <div class="delivered-header">
+                <div>
+                    <h2 class="delivered-title">Órdenes Entregadas</h2>
+                    <p class="delivered-subtitle">Historial de órdenes completadas</p>
+                </div>
+                <button class="btn btn-success" id="toggle-delivered-btn">
+                    <i class="fas fa-eye"></i> Mostrar/Ocultar
+                </button>
             </div>
             
-            <div id="report-orders-container">
-                <!-- Las órdenes del día se mostrarán aquí en el nuevo diseño -->
-            </div>
+            <div class="delivered-grid" id="delivered-orders-container" style="display: none;"></div>
         </div>
     </div>
     
@@ -887,6 +1061,7 @@
         </div>
     </footer>
 
+    <!-- EL JAVASCRIPT PERMANECE EXACTAMENTE IGUAL -->
     <script>
         // Variables globales
         let orders = [];
@@ -901,9 +1076,14 @@
         const branchSelect = document.getElementById('branch-select');
         const generateReportBtn = document.getElementById('generate-report-btn');
         const refreshPreviewBtn = document.getElementById('refresh-preview-btn');
-        const testPdfBtn = document.getElementById('test-pdf-btn');
+        const toggleDeliveredBtn = document.getElementById('toggle-delivered-btn');
         const reportSummaryStats = document.getElementById('report-summary-stats');
         const reportOrdersContainer = document.getElementById('report-orders-container');
+        const deliveredOrdersContainer = document.getElementById('delivered-orders-container');
+        
+        // NUEVOS ELEMENTOS DEL DOM PARA PDF
+        const generatePdfDailyBtn = document.getElementById('generate-pdf-daily-btn');
+        const generatePdfDeliveredBtn = document.getElementById('generate-pdf-delivered-btn');
         
         // Columnas
         const receptionColumn = document.getElementById('reception-column');
@@ -912,7 +1092,6 @@
         const dryingColumn = document.getElementById('drying-column');
         const foldingColumn = document.getElementById('folding-column');
         const finishedColumn = document.getElementById('finished-column');
-        const deliveredColumn = document.getElementById('delivered-column');
         
         // Contadores
         const receptionCountElement = document.getElementById('reception-count');
@@ -934,6 +1113,7 @@
             renderOrders();
             updateStats();
             updateReportPreview();
+            updateDeliveredOrders();
             
             // Event listeners
             addOrderBtn.addEventListener('click', showOrderForm);
@@ -942,9 +1122,13 @@
             saveDataBtn.addEventListener('click', saveOrdersToStorage);
             clearDataBtn.addEventListener('click', clearAllData);
             branchSelect.addEventListener('change', handleBranchChange);
-            generateReportBtn.addEventListener('click', generateDailyReport);
+            generateReportBtn.addEventListener('click', generateExcelReport);
             refreshPreviewBtn.addEventListener('click', updateReportPreview);
-            testPdfBtn.addEventListener('click', generateTestPDF);
+            toggleDeliveredBtn.addEventListener('click', toggleDeliveredOrders);
+            
+            // NUEVOS EVENT LISTENERS PARA PDF
+            generatePdfDailyBtn.addEventListener('click', generateDailyOrdersPDF);
+            generatePdfDeliveredBtn.addEventListener('click', generateDeliveredOrdersPDF);
             
             // Hacer las columnas arrastrables
             makeColumnsDraggable();
@@ -956,7 +1140,16 @@
         // Funciones
         function updateCurrentTime() {
             const now = new Date();
-            currentTimeElement.textContent = now.toLocaleString('es-ES');
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            };
+            currentTimeElement.textContent = now.toLocaleString('es-ES', options);
         }
         
         function showOrderForm() {
@@ -993,8 +1186,11 @@
             
             const clientName = document.getElementById('client-name').value;
             const clientPhone = document.getElementById('client-phone').value;
+            const responsible = document.getElementById('responsible').value;
             const orderDetails = document.getElementById('order-details').value;
-            const orderType = document.getElementById('order-type').value;
+            const serviceType = document.getElementById('service-type').value;
+            const garmentType = document.getElementById('garment-type').value;
+            const washType = document.getElementById('wash-type').value;
             const includeIroning = document.getElementById('include-ironing').checked;
             
             const orderNumber = generateOrderNumber();
@@ -1003,12 +1199,15 @@
                 id: orderNumber, // Usar el número de orden generado como ID
                 clientName: clientName,
                 clientPhone: clientPhone,
+                responsible: responsible,
                 orderDetails: orderDetails,
-                orderType: orderType,
+                serviceType: serviceType,
+                garmentType: garmentType,
+                washType: washType,
                 includeIroning: includeIroning,
                 status: 'reception',
                 branch: currentBranch,
-                entryTime: new Date().toLocaleString('es-ES'),
+                entryTime: formatToAMPM(new Date()),
                 treatmentTime: '',
                 washingTime: '',
                 dryingTime: '',
@@ -1021,10 +1220,28 @@
             renderOrders();
             updateStats();
             updateReportPreview();
+            updateDeliveredOrders();
             hideOrderForm();
             saveOrdersToStorage();
             
             alert(`Orden agregada correctamente - Número: ${orderNumber}`);
+        }
+        
+        // Función para formatear fecha a formato AM/PM
+        function formatToAMPM(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // La hora '0' debe ser '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            return `${day}/${month}/${year}, ${hours}:${minutes} ${ampm}`;
         }
         
         function handleBranchChange(e) {
@@ -1032,6 +1249,7 @@
             renderOrders();
             updateStats();
             updateReportPreview();
+            updateDeliveredOrders();
         }
         
         function renderOrders() {
@@ -1042,10 +1260,9 @@
             dryingColumn.innerHTML = '';
             foldingColumn.innerHTML = '';
             finishedColumn.innerHTML = '';
-            deliveredColumn.innerHTML = '';
             
             // Filtrar órdenes por sucursal actual
-            const branchOrders = orders.filter(order => order.branch === currentBranch);
+            const branchOrders = orders.filter(order => order.branch === currentBranch && order.status !== 'delivered');
             
             // Renderizar órdenes en sus columnas correspondientes
             branchOrders.forEach(order => {
@@ -1070,14 +1287,11 @@
                     case 'finished':
                         finishedColumn.appendChild(orderCard);
                         break;
-                    case 'delivered':
-                        deliveredColumn.appendChild(orderCard);
-                        break;
                 }
             });
         }
         
-        // FUNCIÓN MEJORADA: Crear tarjeta de orden compacta
+        // FUNCIÓN MEJORADA: Crear tarjeta de orden compacta con funcionalidad expandible
         function createOrderCard(order) {
             const card = document.createElement('div');
             card.className = 'order-card';
@@ -1114,57 +1328,83 @@
                     statusText = 'Finalizado'; 
                     statusClass = 'status-finished';
                     break;
-                case 'delivered': 
-                    statusText = 'Entregada'; 
-                    statusClass = 'status-delivered';
-                    break;
             }
             
-            const ironingBadge = order.includeIroning ? '<div class="ironing-badge">Planchado</div>' : '';
-            
+            // VISTA COMPACTA - Solo nombre y número de orden
             card.innerHTML = `
                 <div class="order-card-header">
                     <div class="order-client">${order.clientName}</div>
                     <div class="order-id">${order.id}</div>
                 </div>
-                <div class="order-badges">
-                    ${ironingBadge}
-                </div>
-                <div class="order-details-compact">
-                    <div><strong>Servicio:</strong> ${getServiceTypeText(order.orderType)}</div>
-                    <div><strong>Teléfono:</strong> ${order.clientPhone || 'N/A'}</div>
-                </div>
-                <div class="order-status ${statusClass}">${statusText}</div>
                 <div class="order-time">
                     <strong>Recepción:</strong> ${formatTime(order.entryTime)}
                 </div>
-                <button class="expand-btn" onclick="toggleOrderDetails('${order.id}')">Ver más detalles</button>
+                <button class="expand-btn" onclick="toggleOrderDetails('${order.id}')">
+                    <span id="toggleText-${order.id}">Ver más detalles</span>
+                    <svg class="toggle-icon" id="toggleIcon-${order.id}" width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
                 <div class="order-details-full" id="details-${order.id}">
-                    <div><strong>Detalles:</strong> ${order.orderDetails || 'Sin detalles adicionales'}</div>
-                    ${order.treatmentTime ? `<div><strong>Tratamiento:</strong> ${formatTime(order.treatmentTime)}</div>` : ''}
-                    ${order.washingTime ? `<div><strong>Lavado:</strong> ${formatTime(order.washingTime)}</div>` : ''}
-                    ${order.dryingTime ? `<div><strong>Secado:</strong> ${formatTime(order.dryingTime)}</div>` : ''}
-                    ${order.foldingTime ? `<div><strong>Doblado:</strong> ${formatTime(order.foldingTime)}</div>` : ''}
-                    ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${formatTime(order.finishedTime)}</div>` : ''}
-                    ${order.deliveredTime ? `<div><strong>Entregado:</strong> ${formatTime(order.deliveredTime)}</div>` : ''}
+                    <div class="order-badges">
+                        ${order.includeIroning ? '<div class="ironing-badge">Planchado</div>' : ''}
+                    </div>
+                    <div class="order-details-compact">
+                        <div><strong>Responsable:</strong> ${order.responsible}</div>
+                        <div><strong>Servicio:</strong> ${getServiceTypeText(order.serviceType)}</div>
+                        <div><strong>Prenda:</strong> ${getGarmentTypeText(order.garmentType)}</div>
+                        <div><strong>Teléfono:</strong> ${order.clientPhone || 'N/A'}</div>
+                        <div><strong>Lavado:</strong> ${getWashTypeText(order.washType)}</div>
+                    </div>
+                    <div class="order-status ${statusClass}">${statusText}</div>
+                    <div class="order-details-compact">
+                        <div><strong>Detalles:</strong> ${order.orderDetails || 'Sin detalles adicionales'}</div>
+                        ${order.treatmentTime ? `<div><strong>Tratamiento:</strong> ${formatTime(order.treatmentTime)}</div>` : ''}
+                        ${order.washingTime ? `<div><strong>Lavado:</strong> ${formatTime(order.washingTime)}</div>` : ''}
+                        ${order.dryingTime ? `<div><strong>Secado:</strong> ${formatTime(order.dryingTime)}</div>` : ''}
+                        ${order.foldingTime ? `<div><strong>Doblado:</strong> ${formatTime(order.foldingTime)}</div>` : ''}
+                        ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${formatTime(order.finishedTime)}</div>` : ''}
+                    </div>
+                    ${order.status === 'finished' ? `<button class="btn btn-deliver" onclick="markAsDelivered('${order.id}')">
+                        <i class="fas fa-truck"></i> Marcar como Entregado
+                    </button>` : ''}
                 </div>
             `;
             
-            // Eventos de arrastre
+            // Eventos de arrastre - CORREGIDOS
             card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragend', handleDragEnd);
             
             return card;
         }
         
-        // Función para formatear la hora (solo hora:minutos)
+        // Función para marcar una orden como entregada
+        function markAsDelivered(orderId) {
+            const orderIndex = orders.findIndex(order => order.id === orderId);
+            
+            if (orderIndex !== -1) {
+                const order = orders[orderIndex];
+                
+                // Actualizar el estado
+                order.status = 'delivered';
+                order.deliveredTime = formatToAMPM(new Date());
+                
+                renderOrders();
+                updateStats();
+                updateReportPreview();
+                updateDeliveredOrders();
+                saveOrdersToStorage();
+                
+                alert(`Orden ${orderId} marcada como entregada`);
+            }
+        }
+        
+        // Función para formatear la hora (solo hora:minutos AM/PM)
         function formatTime(dateTimeString) {
             if (!dateTimeString) return '';
             const parts = dateTimeString.split(', ');
             if (parts.length === 2) {
-                const timePart = parts[1].split(':');
-                if (timePart.length >= 2) {
-                    return `${timePart[0]}:${timePart[1]}`;
-                }
+                return parts[1]; // Ya está en formato AM/PM
             }
             return dateTimeString;
         }
@@ -1172,23 +1412,46 @@
         // Función para alternar visibilidad de detalles completos
         function toggleOrderDetails(orderId) {
             const detailsElement = document.getElementById(`details-${orderId}`);
-            const button = detailsElement.previousElementSibling;
+            const toggleText = document.getElementById(`toggleText-${orderId}`);
+            const toggleIcon = document.getElementById(`toggleIcon-${orderId}`);
             
-            if (detailsElement.classList.contains('active')) {
-                detailsElement.classList.remove('active');
-                button.textContent = 'Ver más detalles';
+            if (detailsElement.classList.contains('expanded')) {
+                detailsElement.classList.remove('expanded');
+                toggleText.textContent = 'Ver más detalles';
+                toggleIcon.classList.remove('expanded');
             } else {
-                detailsElement.classList.add('active');
-                button.textContent = 'Ver menos detalles';
+                detailsElement.classList.add('expanded');
+                toggleText.textContent = 'Ver menos detalles';
+                toggleIcon.classList.add('expanded');
             }
         }
         
         function getServiceTypeText(type) {
             switch(type) {
-                case 'lavado': return 'Lavado Básico';
-                case 'lavado-seco': return 'Lavado en Seco';
+                case 'lavado': return 'Lavado';
+                case 'secado': return 'Secado';
+                case 'doblado': return 'Doblado';
+                case 'centrifugado': return 'Centrifugado';
                 case 'planchado': return 'Planchado';
-                case 'completo': return 'Servicio Completo';
+                default: return type;
+            }
+        }
+        
+        function getGarmentTypeText(type) {
+            switch(type) {
+                case 'ropa-basica': return 'Ropa Básica';
+                case 'edredones': return 'Edredones';
+                case 'peluches': return 'Peluches';
+                case 'prenda-especial': return 'Prenda Especial';
+                case 'otro': return 'Otro';
+                default: return type;
+            }
+        }
+        
+        function getWashTypeText(type) {
+            switch(type) {
+                case 'estandar': return 'Estandar';
+                case 'premium': return 'Premium';
                 default: return type;
             }
         }
@@ -1207,22 +1470,44 @@
             
             columns.forEach(column => {
                 column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('dragenter', handleDragEnter);
+                column.addEventListener('dragleave', handleDragLeave);
                 column.addEventListener('drop', handleDrop);
             });
         }
         
+        // FUNCIONES DE ARRASTRE CORREGIDAS
         function handleDragStart(e) {
             e.dataTransfer.setData('text/plain', e.target.dataset.orderId);
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+        
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
         }
         
         function handleDragOver(e) {
             e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+        
+        function handleDragEnter(e) {
+            e.preventDefault();
+            e.target.closest('.column-content').classList.add('drag-over');
+        }
+        
+        function handleDragLeave(e) {
+            e.target.closest('.column-content').classList.remove('drag-over');
         }
         
         function handleDrop(e) {
             e.preventDefault();
+            const columnContent = e.target.closest('.column-content');
+            columnContent.classList.remove('drag-over');
+            
             const orderId = e.dataTransfer.getData('text/plain');
-            const newStatus = e.target.closest('.column-content').dataset.status;
+            const newStatus = columnContent.dataset.status;
             
             updateOrderStatus(orderId, newStatus);
         }
@@ -1238,7 +1523,7 @@
                 order.status = newStatus;
                 
                 // Actualizar tiempos
-                const currentTime = new Date().toLocaleString('es-ES');
+                const currentTime = formatToAMPM(new Date());
                 
                 if (newStatus === 'treatment' && !order.treatmentTime) {
                     order.treatmentTime = currentTime;
@@ -1257,6 +1542,7 @@
                 renderOrders();
                 updateStats();
                 updateReportPreview();
+                updateDeliveredOrders();
                 saveOrdersToStorage();
             }
         }
@@ -1303,25 +1589,317 @@
             return `${avgTime.toFixed(1)}h`;
         }
         
-        // Función para parsear correctamente las fechas
+        // Función para parsear correctamente las fechas en formato AM/PM
         function parseCustomDate(dateString) {
-            // Formato: "20/10/2025, 14:30:25"
+            // Formato: "20/10/2025, 2:30 PM"
             const parts = dateString.split(', ');
             if (parts.length !== 2) return null;
             
             const datePart = parts[0].split('/');
-            const timePart = parts[1].split(':');
+            const timePart = parts[1].split(' ');
             
-            if (datePart.length !== 3 || timePart.length !== 3) return null;
+            if (datePart.length !== 3 || timePart.length < 2) return null;
             
             const day = parseInt(datePart[0]);
             const month = parseInt(datePart[1]) - 1; // Los meses en JS son 0-indexed
             const year = parseInt(datePart[2]);
-            const hour = parseInt(timePart[0]);
-            const minute = parseInt(timePart[1]);
-            const second = parseInt(timePart[2]);
             
-            return new Date(year, month, day, hour, minute, second);
+            const timeComponents = timePart[0].split(':');
+            let hour = parseInt(timeComponents[0]);
+            const minute = parseInt(timeComponents[1]);
+            const ampm = timePart[1];
+            
+            // Convertir a formato 24 horas
+            if (ampm === 'PM' && hour < 12) {
+                hour += 12;
+            } else if (ampm === 'AM' && hour === 12) {
+                hour = 0;
+            }
+            
+            return new Date(year, month, day, hour, minute, 0);
+        }
+        
+        // NUEVA FUNCIÓN: Generar PDF para órdenes del día
+        function generateDailyOrdersPDF() {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            // Filtrar órdenes del día actual para la sucursal actual (excluyendo entregadas)
+            const todaysOrders = orders.filter(order => {
+                if (order.branch !== currentBranch || order.status === 'delivered') return false;
+                
+                try {
+                    const orderTime = parseCustomDate(order.entryTime);
+                    return orderTime && orderTime >= today;
+                } catch (e) {
+                    console.error('Error parsing date:', order.entryTime, e);
+                    return false;
+                }
+            });
+            
+            if (todaysOrders.length === 0) {
+                alert('No hay órdenes del día para generar el PDF');
+                return;
+            }
+            
+            // Crear el documento PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Configuración inicial
+            const pageWidth = doc.internal.pageSize.getWidth();
+            let yPosition = 20;
+            
+            // Título
+            doc.setFontSize(18);
+            doc.setTextColor(17, 59, 96); // Color azul oscuro
+            doc.text(`Órdenes del Día - ${getBranchName(currentBranch)}`, pageWidth / 2, yPosition, { align: 'center' });
+            
+            yPosition += 10;
+            
+            // Fecha del reporte
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Fecha: ${now.toLocaleDateString('es-ES')}`, pageWidth / 2, yPosition, { align: 'center' });
+            
+            yPosition += 15;
+            
+            // Estadísticas
+            const receptionCount = todaysOrders.filter(order => order.status === 'reception').length;
+            const processCount = todaysOrders.filter(order => 
+                order.status === 'treatment' || order.status === 'washing' || 
+                order.status === 'drying' || order.status === 'folding').length;
+            const finishedCount = todaysOrders.filter(order => order.status === 'finished').length;
+            const ironingCount = todaysOrders.filter(order => order.includeIroning).length;
+            
+            doc.setFontSize(12);
+            doc.setTextColor(17, 59, 96);
+            doc.text(`Total Órdenes: ${todaysOrders.length}`, 20, yPosition);
+            doc.text(`En Recepción: ${receptionCount}`, 80, yPosition);
+            doc.text(`En Proceso: ${processCount}`, 140, yPosition);
+            
+            yPosition += 8;
+            doc.text(`Finalizadas: ${finishedCount}`, 20, yPosition);
+            doc.text(`Con Planchado: ${ironingCount}`, 80, yPosition);
+            
+            yPosition += 15;
+            
+            // Tabla de órdenes
+            const tableColumn = ["ID", "Cliente", "Responsable", "Estado", "Servicio", "Planchado"];
+            const tableRows = [];
+            
+            todaysOrders.forEach(order => {
+                let statusText = '';
+                switch(order.status) {
+                    case 'reception': statusText = 'Recepción'; break;
+                    case 'treatment': statusText = 'Tratamiento'; break;
+                    case 'washing': statusText = 'Lavado'; break;
+                    case 'drying': statusText = 'Secado'; break;
+                    case 'folding': statusText = 'Doblado'; break;
+                    case 'finished': statusText = 'Finalizado'; break;
+                }
+                
+                const orderData = [
+                    order.id,
+                    order.clientName,
+                    order.responsible,
+                    statusText,
+                    getServiceTypeText(order.serviceType),
+                    order.includeIroning ? 'Sí' : 'No'
+                ];
+                tableRows.push(orderData);
+            });
+            
+            // Generar la tabla
+            doc.autoTable({
+                startY: yPosition,
+                head: [tableColumn],
+                body: tableRows,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 3 },
+                headStyles: { fillColor: [81, 193, 228], textColor: 255 },
+                alternateRowStyles: { fillColor: [240, 240, 240] },
+                margin: { top: yPosition }
+            });
+            
+            // Guardar el PDF
+            const fileName = `Ordenes_Dia_${getBranchName(currentBranch)}_${now.toLocaleDateString('es-ES').replace(/\//g, '-')}.pdf`;
+            doc.save(fileName);
+            
+            alert(`PDF de órdenes del día generado correctamente: ${fileName}`);
+        }
+        
+        // NUEVA FUNCIÓN: Generar PDF para órdenes entregadas
+        function generateDeliveredOrdersPDF() {
+            const deliveredOrders = orders.filter(order => 
+                order.branch === currentBranch && order.status === 'delivered');
+            
+            if (deliveredOrders.length === 0) {
+                alert('No hay órdenes entregadas para generar el PDF');
+                return;
+            }
+            
+            // Crear el documento PDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Configuración inicial
+            const pageWidth = doc.internal.pageSize.getWidth();
+            let yPosition = 20;
+            
+            // Título
+            doc.setFontSize(18);
+            doc.setTextColor(17, 59, 96); // Color azul oscuro
+            doc.text(`Órdenes Entregadas - ${getBranchName(currentBranch)}`, pageWidth / 2, yPosition, { align: 'center' });
+            
+            yPosition += 10;
+            
+            // Fecha del reporte
+            const now = new Date();
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Fecha: ${now.toLocaleDateString('es-ES')}`, pageWidth / 2, yPosition, { align: 'center' });
+            
+            yPosition += 15;
+            
+            // Estadísticas
+            doc.setFontSize(12);
+            doc.setTextColor(17, 59, 96);
+            doc.text(`Total Órdenes Entregadas: ${deliveredOrders.length}`, 20, yPosition);
+            
+            yPosition += 15;
+            
+            // Tabla de órdenes entregadas
+            const tableColumn = ["ID", "Cliente", "Responsable", "Servicio", "Planchado", "Recepción", "Entrega"];
+            const tableRows = [];
+            
+            deliveredOrders.forEach(order => {
+                const orderData = [
+                    order.id,
+                    order.clientName,
+                    order.responsible,
+                    getServiceTypeText(order.serviceType),
+                    order.includeIroning ? 'Sí' : 'No',
+                    formatTime(order.entryTime),
+                    formatTime(order.deliveredTime)
+                ];
+                tableRows.push(orderData);
+            });
+            
+            // Generar la tabla
+            doc.autoTable({
+                startY: yPosition,
+                head: [tableColumn],
+                body: tableRows,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 3 },
+                headStyles: { fillColor: [71, 174, 77], textColor: 255 }, // Color verde
+                alternateRowStyles: { fillColor: [240, 240, 240] },
+                margin: { top: yPosition }
+            });
+            
+            // Guardar el PDF
+            const fileName = `Ordenes_Entregadas_${getBranchName(currentBranch)}_${now.toLocaleDateString('es-ES').replace(/\//g, '-')}.pdf`;
+            doc.save(fileName);
+            
+            alert(`PDF de órdenes entregadas generado correctamente: ${fileName}`);
+        }
+        
+        // NUEVA FUNCIÓN: Generar informe en Excel
+        function generateExcelReport() {
+            // Filtrar órdenes de la sucursal actual
+            const branchOrders = orders.filter(order => order.branch === currentBranch);
+            
+            if (branchOrders.length === 0) {
+                alert('No hay órdenes para generar el informe');
+                return;
+            }
+            
+            // Crear datos para el Excel
+            const excelData = [];
+            
+            // Encabezados
+            excelData.push([
+                'Fecha',
+                'Responsable',
+                'Nombre del cliente',
+                'Servicio',
+                'Recepción',
+                'Tratamiento',
+                'Lavado',
+                'Secado',
+                'Doblado',
+                'Finalizado',
+                'Entregado',
+                'Tiempo estimado',
+                'Observación'
+            ]);
+            
+            // Datos de las órdenes
+            branchOrders.forEach(order => {
+                // Calcular tiempo estimado
+                let estimatedTime = '';
+                if (order.deliveredTime) {
+                    const entryTime = parseCustomDate(order.entryTime);
+                    const deliveredTime = parseCustomDate(order.deliveredTime);
+                    
+                    if (entryTime && deliveredTime) {
+                        const processTime = (deliveredTime - entryTime) / (1000 * 60 * 60); // en horas
+                        estimatedTime = `${processTime.toFixed(1)}h`;
+                    }
+                }
+                
+                // Obtener solo la fecha
+                const date = order.entryTime.split(',')[0];
+                
+                excelData.push([
+                    date,
+                    order.responsible,
+                    order.clientName,
+                    getServiceTypeText(order.serviceType),
+                    formatTime(order.entryTime) || '',
+                    formatTime(order.treatmentTime) || '',
+                    formatTime(order.washingTime) || '',
+                    formatTime(order.dryingTime) || '',
+                    formatTime(order.foldingTime) || '',
+                    formatTime(order.finishedTime) || '',
+                    formatTime(order.deliveredTime) || '',
+                    estimatedTime,
+                    order.orderDetails || ''
+                ]);
+            });
+            
+            // Crear libro de trabajo
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            
+            // Ajustar el ancho de las columnas
+            const colWidths = [
+                { wch: 12 }, // Fecha
+                { wch: 15 }, // Responsable
+                { wch: 20 }, // Nombre del cliente
+                { wch: 12 }, // Servicio
+                { wch: 12 }, // Recepción
+                { wch: 12 }, // Tratamiento
+                { wch: 12 }, // Lavado
+                { wch: 12 }, // Secado
+                { wch: 12 }, // Doblado
+                { wch: 12 }, // Finalizado
+                { wch: 12 }, // Entregado
+                { wch: 15 }, // Tiempo estimado
+                { wch: 30 }  // Observación
+            ];
+            ws['!cols'] = colWidths;
+            
+            // Agregar la hoja al libro
+            XLSX.utils.book_append_sheet(wb, ws, 'Informe Lavandería');
+            
+            // Generar el archivo Excel
+            const now = new Date();
+            const fileName = `Informe_${getBranchName(currentBranch)}_${now.toLocaleDateString('es-ES').replace(/\//g, '-')}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+            
+            alert(`Informe generado correctamente: ${fileName}`);
         }
         
         // NUEVA FUNCIÓN: Actualizar vista previa del informe con diseño mejorado
@@ -1329,9 +1907,9 @@
             const now = new Date();
             const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             
-            // Filtrar órdenes del día actual para la sucursal actual
+            // Filtrar órdenes del día actual para la sucursal actual (excluyendo entregadas)
             const todaysOrders = orders.filter(order => {
-                if (order.branch !== currentBranch) return false;
+                if (order.branch !== currentBranch || order.status === 'delivered') return false;
                 
                 try {
                     const orderTime = parseCustomDate(order.entryTime);
@@ -1359,18 +1937,17 @@
                 order.status === 'treatment' || order.status === 'washing' || 
                 order.status === 'drying' || order.status === 'folding').length;
             const finishedCount = todaysOrders.filter(order => order.status === 'finished').length;
-            const deliveredCount = todaysOrders.filter(order => order.status === 'delivered').length;
             const ironingCount = todaysOrders.filter(order => order.includeIroning).length;
             
             // Actualizar estadísticas en tarjetas
-            updateReportStats(todaysOrders.length, receptionCount, processCount, finishedCount, deliveredCount, ironingCount);
+            updateReportStats(todaysOrders.length, receptionCount, processCount, finishedCount, ironingCount);
             
             // Actualizar grid de órdenes
             updateOrdersGrid(todaysOrders);
         }
         
         // Función para actualizar las estadísticas del informe
-        function updateReportStats(total, reception, process, finished, delivered, ironing) {
+        function updateReportStats(total, reception, process, finished, ironing) {
             reportSummaryStats.innerHTML = `
                 <div class="report-stat-card">
                     <div class="report-stat-value">${total}</div>
@@ -1387,10 +1964,6 @@
                 <div class="report-stat-card">
                     <div class="report-stat-value">${finished}</div>
                     <div class="report-stat-label">Finalizadas</div>
-                </div>
-                <div class="report-stat-card">
-                    <div class="report-stat-value">${delivered}</div>
-                    <div class="report-stat-label">Entregadas</div>
                 </div>
                 <div class="report-stat-card">
                     <div class="report-stat-value">${ironing}</div>
@@ -1413,7 +1986,7 @@
             }
             
             let ordersHTML = `
-                <h3 style="margin-bottom: 20px; color: var(--dark-color);">Órdenes del Día (${ordersList.length})</h3>
+                <h3 style="margin-bottom: 20px; color: var(--dark-blue);">Órdenes del Día (${ordersList.length})</h3>
                 <div class="orders-grid">
             `;
             
@@ -1449,11 +2022,6 @@
                         statusClass = 'status-finished';
                         cardClass = 'finished';
                         break;
-                    case 'delivered': 
-                        statusText = 'Entregada'; 
-                        statusClass = 'status-delivered';
-                        cardClass = 'delivered';
-                        break;
                 }
                 
                 if (order.includeIroning) {
@@ -1472,13 +2040,25 @@
                         
                         <div class="order-report-badges">
                             ${ironingBadge}
-                            <div class="order-report-badge badge-service">${getServiceTypeText(order.orderType)}</div>
+                            <div class="order-report-badge badge-service">${getServiceTypeText(order.serviceType)}</div>
                         </div>
                         
                         <div class="order-report-details">
                             <div class="order-report-detail">
+                                <strong>Responsable:</strong>
+                                <span>${order.responsible}</span>
+                            </div>
+                            <div class="order-report-detail">
                                 <strong>Teléfono:</strong>
                                 <span>${order.clientPhone || 'No proporcionado'}</span>
+                            </div>
+                            <div class="order-report-detail">
+                                <strong>Prenda:</strong>
+                                <span>${getGarmentTypeText(order.garmentType)}</span>
+                            </div>
+                            <div class="order-report-detail">
+                                <strong>Lavado:</strong>
+                                <span>${getWashTypeText(order.washType)}</span>
                             </div>
                             <div class="order-report-detail">
                                 <strong>Detalles:</strong>
@@ -1495,8 +2075,14 @@
                             ${order.dryingTime ? `<div><strong>Secado:</strong> ${order.dryingTime}</div>` : ''}
                             ${order.foldingTime ? `<div><strong>Doblado:</strong> ${order.foldingTime}</div>` : ''}
                             ${order.finishedTime ? `<div><strong>Finalizado:</strong> ${order.finishedTime}</div>` : ''}
-                            ${order.deliveredTime ? `<div><strong>Entregado:</strong> ${order.deliveredTime}</div>` : ''}
                         </div>
+                        ${order.status === 'finished' ? `
+                        <div style="margin-top: 10px; text-align: center;">
+                            <button class="btn btn-deliver" onclick="markAsDelivered('${order.id}')">
+                                <i class="fas fa-truck"></i> Marcar como Entregado
+                            </button>
+                        </div>
+                        ` : ''}
                     </div>
                 `;
             });
@@ -1505,95 +2091,93 @@
             reportOrdersContainer.innerHTML = ordersHTML;
         }
         
-        function generateDailyReport() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+        // NUEVA FUNCIÓN: Actualizar órdenes entregadas
+        function updateDeliveredOrders() {
+            const deliveredOrders = orders.filter(order => 
+                order.branch === currentBranch && order.status === 'delivered');
             
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            // Filtrar órdenes del día actual para la sucursal actual
-            const todaysOrders = orders.filter(order => {
-                if (order.branch !== currentBranch) return false;
-                
+            // Ordenar por fecha de entrega (más recientes primero)
+            deliveredOrders.sort((a, b) => {
                 try {
-                    const orderTime = parseCustomDate(order.entryTime);
-                    return orderTime && orderTime >= today;
-                } catch (e) {
-                    return false;
-                }
-            });
-            
-            // Ordenar por hora de entrada
-            todaysOrders.sort((a, b) => {
-                try {
-                    const timeA = parseCustomDate(a.entryTime);
-                    const timeB = parseCustomDate(b.entryTime);
-                    return timeA - timeB;
+                    const timeA = parseCustomDate(a.deliveredTime);
+                    const timeB = parseCustomDate(b.deliveredTime);
+                    return timeB - timeA;
                 } catch (e) {
                     return 0;
                 }
             });
             
-            // Título
-            doc.setFontSize(18);
-            doc.setTextColor(41, 128, 185);
-            doc.text(`Informe Diario - Lavandería Limpio Y Listo`, 20, 20);
-            
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text(`Sucursal: ${getBranchName(currentBranch)}`, 20, 30);
-            doc.text(`Fecha: ${now.toLocaleDateString('es-ES')}`, 20, 37);
-            doc.text(`Hora de generación: ${now.toLocaleTimeString('es-ES')}`, 20, 44);
-            doc.text(`Total de órdenes: ${todaysOrders.length}`, 20, 51);
-            
-            // Tabla de órdenes
-            if (todaysOrders.length > 0) {
-                const tableColumn = ["#", "Cliente", "Servicio", "Planchado", "Estado", "Hora Recepción", "Hora Entrega"];
-                const tableRows = [];
-                
-                todaysOrders.forEach(order => {
-                    let statusText = '';
-                    switch(order.status) {
-                        case 'reception': statusText = 'Recepción'; break;
-                        case 'treatment': statusText = 'Tratamiento'; break;
-                        case 'washing': statusText = 'Lavado'; break;
-                        case 'drying': statusText = 'Secado'; break;
-                        case 'folding': statusText = 'Doblado'; break;
-                        case 'finished': statusText = 'Finalizado'; break;
-                        case 'delivered': statusText = 'Entregada'; break;
-                    }
-                    
-                    const orderData = [
-                        order.id.toString(),
-                        order.clientName,
-                        getServiceTypeText(order.orderType),
-                        order.includeIroning ? 'Sí' : 'No',
-                        statusText,
-                        order.entryTime,
-                        order.deliveredTime || '-'
-                    ];
-                    tableRows.push(orderData);
-                });
-                
-                doc.autoTable({
-                    head: [tableColumn],
-                    body: tableRows,
-                    startY: 60,
-                    theme: 'grid',
-                    styles: { fontSize: 8 },
-                    headStyles: { fillColor: [79, 195, 247] }
-                });
-            } else {
-                doc.text('No hay órdenes para mostrar en el día de hoy.', 20, 70);
+            if (deliveredOrders.length === 0) {
+                deliveredOrdersContainer.innerHTML = `
+                    <div class="no-orders-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>No hay órdenes entregadas</h3>
+                        <p>No se han completado entregas aún</p>
+                    </div>
+                `;
+                return;
             }
             
-            // Guardar el PDF
-            doc.save(`Informe_${getBranchName(currentBranch)}_${now.toLocaleDateString('es-ES').replace(/\//g, '-')}.pdf`);
+            let deliveredHTML = '';
+            
+            deliveredOrders.forEach(order => {
+                const ironingBadge = order.includeIroning ? 
+                    '<div class="order-report-badge badge-ironing">Planchado</div>' : '';
+                
+                deliveredHTML += `
+                    <div class="delivered-card">
+                        <div class="order-report-header">
+                            <div class="order-report-client">${order.clientName}</div>
+                            <div class="order-report-id">${order.id}</div>
+                        </div>
+                        
+                        <div class="order-report-badges">
+                            ${ironingBadge}
+                            <div class="order-report-badge badge-service">${getServiceTypeText(order.serviceType)}</div>
+                        </div>
+                        
+                        <div class="order-report-details">
+                            <div class="order-report-detail">
+                                <strong>Responsable:</strong>
+                                <span>${order.responsible}</span>
+                            </div>
+                            <div class="order-report-detail">
+                                <strong>Teléfono:</strong>
+                                <span>${order.clientPhone || 'No proporcionado'}</span>
+                            </div>
+                            <div class="order-report-detail">
+                                <strong>Prenda:</strong>
+                                <span>${getGarmentTypeText(order.garmentType)}</span>
+                            </div>
+                            <div class="order-report-detail">
+                                <strong>Lavado:</strong>
+                                <span>${getWashTypeText(order.washType)}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-report-time">
+                            <div><strong>Recepción:</strong> ${order.entryTime}</div>
+                            <div><strong>Entrega:</strong> ${order.deliveredTime}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            deliveredOrdersContainer.innerHTML = deliveredHTML;
         }
         
-        function generateTestPDF() {
-            generateDailyReport();
+        // Función para mostrar/ocultar órdenes entregadas
+        function toggleDeliveredOrders() {
+            const container = deliveredOrdersContainer;
+            const button = toggleDeliveredBtn;
+            
+            if (container.style.display === 'none') {
+                container.style.display = 'grid';
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar';
+            } else {
+                container.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-eye"></i> Mostrar';
+            }
         }
         
         function saveOrdersToStorage() {
@@ -1615,6 +2199,7 @@
                 renderOrders();
                 updateStats();
                 updateReportPreview();
+                updateDeliveredOrders();
                 localStorage.removeItem('ll-orders');
                 alert('Todos los datos han sido eliminados');
             }
@@ -1635,31 +2220,37 @@
                         id: `001/${dateString}`,
                         clientName: 'María González',
                         clientPhone: '1234-5678',
+                        responsible: 'Juan Pérez',
                         orderDetails: '3 camisas, 2 pantalones',
-                        orderType: 'lavado',
+                        serviceType: 'lavado',
+                        garmentType: 'ropa-basica',
+                        washType: 'premium',
                         includeIroning: true,
                         status: 'delivered',
                         branch: 'jalapa',
-                        entryTime: new Date().toLocaleString('es-ES'),
-                        treatmentTime: new Date(Date.now() + 30*60000).toLocaleString('es-ES'),
-                        washingTime: new Date(Date.now() + 60*60000).toLocaleString('es-ES'),
-                        dryingTime: new Date(Date.now() + 90*60000).toLocaleString('es-ES'),
-                        foldingTime: new Date(Date.now() + 120*60000).toLocaleString('es-ES'),
-                        finishedTime: new Date(Date.now() + 150*60000).toLocaleString('es-ES'),
-                        deliveredTime: new Date(Date.now() + 180*60000).toLocaleString('es-ES')
+                        entryTime: formatToAMPM(new Date(Date.now() - 4*60*60000)),
+                        treatmentTime: formatToAMPM(new Date(Date.now() - 3.5*60*60000)),
+                        washingTime: formatToAMPM(new Date(Date.now() - 3*60*60000)),
+                        dryingTime: formatToAMPM(new Date(Date.now() - 2.5*60*60000)),
+                        foldingTime: formatToAMPM(new Date(Date.now() - 2*60*60000)),
+                        finishedTime: formatToAMPM(new Date(Date.now() - 1.5*60*60000)),
+                        deliveredTime: formatToAMPM(new Date(Date.now() - 1*60*60000))
                     },
                     {
                         id: `002/${dateString}`,
                         clientName: 'Carlos López',
                         clientPhone: '8765-4321',
+                        responsible: 'Ana García',
                         orderDetails: 'Cobijas y edredones',
-                        orderType: 'completo',
+                        serviceType: 'secado',
+                        garmentType: 'edredones',
+                        washType: 'estandar',
                         includeIroning: false,
                         status: 'washing',
                         branch: 'jalapa',
-                        entryTime: new Date().toLocaleString('es-ES'),
-                        treatmentTime: new Date(Date.now() + 15*60000).toLocaleString('es-ES'),
-                        washingTime: new Date(Date.now() + 45*60000).toLocaleString('es-ES'),
+                        entryTime: formatToAMPM(new Date(Date.now() - 2*60*60000)),
+                        treatmentTime: formatToAMPM(new Date(Date.now() - 1.5*60*60000)),
+                        washingTime: formatToAMPM(new Date(Date.now() - 1*60*60000)),
                         dryingTime: '',
                         foldingTime: '',
                         finishedTime: '',
@@ -1669,12 +2260,15 @@
                         id: `003/${dateString}`,
                         clientName: 'Ana Martínez',
                         clientPhone: '5555-1234',
+                        responsible: 'Luis Rodríguez',
                         orderDetails: 'Traje formal',
-                        orderType: 'lavado-seco',
+                        serviceType: 'planchado',
+                        garmentType: 'prenda-especial',
+                        washType: 'premium',
                         includeIroning: true,
                         status: 'reception',
                         branch: 'jalapa',
-                        entryTime: new Date().toLocaleString('es-ES'),
+                        entryTime: formatToAMPM(new Date()),
                         treatmentTime: '',
                         washingTime: '',
                         dryingTime: '',
@@ -1688,6 +2282,7 @@
                 renderOrders();
                 updateStats();
                 updateReportPreview();
+                updateDeliveredOrders();
                 saveOrdersToStorage();
             }
         }
